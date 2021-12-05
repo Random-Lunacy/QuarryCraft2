@@ -1,0 +1,27 @@
+#
+# Reference
+# https://bukkit.gamepedia.com/Plugin_YAML
+#
+name: QuarryCraft2
+main: com.randomlunacy.quarrycraft2.QuarryCraft2
+version: 0.0.1
+api-version: 1.16
+website: https://www.randomlunacy.com/
+depend: []
+softdepend: []
+
+commands:
+  example:
+    aliases: [ 'exmple' ]
+    description: This is an example command
+    permission-message:  Permission quarrycraft2.example is required to use this command
+    usage: /<command> to use the example command.
+
+permissions:
+  quarrycraft2.*:
+    description: Gives access to all quarrycraft2 commands
+    children:
+      quarrycraft2.example: true
+  quarrycraft2.example:
+    description: Gives access to tempateus' example command
+    default: op
