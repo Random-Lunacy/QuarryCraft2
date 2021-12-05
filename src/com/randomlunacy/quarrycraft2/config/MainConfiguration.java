@@ -8,16 +8,70 @@ public class MainConfiguration extends Configuration {
 		this.loadValues();
 	}
 
+	private Boolean doDebug;
+	private int quarryLimit;
+	private int maxQuarryWidth;
+	private int maxQuarryLength;
+	private boolean doWelcomeMessage;
+	private long guideBookCooldown;
+
+	private boolean doWorldGuardProtection;
+	private boolean doGriefPreventionProtection;
+
+	//TODO: Rework to be min/max y for quarry mining
+	private int maxWGY = 100;
+	private int minWGY = 20;
+
 	private void loadValues() {
-		this.isDebugEnabled = this.config.getBoolean("debug");
+		// Unpublished 
+		this.doDebug = this.config.getBoolean("debug", false);
+
+		// Published 
+		this.quarryLimit = this.config.getInt("quarry-limit", 5);
+		this.maxQuarryWidth = this.config.getInt("max-quarry-width", 50);
+		this.maxQuarryLength = this.config.getInt("max-quarry-length", 50);
+		this.doWelcomeMessage = this.config.getBoolean("welcome-message-enabled", true);
+		this.guideBookCooldown = this.config.getLong("guide-book-cooldown", 300000);
+		this.doWorldGuardProtection = this.config.getBoolean("wordlguard-enabled", true);
+		this.doGriefPreventionProtection = this.config.getBoolean("greifprevention-enabled", true);
 	}
 
-	private Boolean isDebugEnabled;
 	public Boolean isDebugEnabled() {
-		return this.isDebugEnabled;
-	}
-	public void setDebugEnabled(Boolean enabled) {
-		this.isDebugEnabled = enabled;
+		return this.doDebug;
 	}
 	
+	public int getQuarryLimit() {
+		return quarryLimit;
+	}
+
+	public int getMaxQuarryWidth() {
+		return maxQuarryWidth;
+	}
+
+	public int getMaxQuarryLength() {
+		return maxQuarryLength;
+	}
+
+	public boolean isWelcomeMessageEnabled() {
+		return doWelcomeMessage;
+	}
+
+	public long getGuideBookCooldown() {
+		return guideBookCooldown;
+	}
+
+	public boolean isWorldGuardProtectionEnabled() {
+		return doWorldGuardProtection;
+	}
+
+	public boolean isGriefPreventionProtectionEnabled() {
+		return doGriefPreventionProtection;
+	}
+
+	public int getMaxWGY() {
+		return maxWGY;
+	}
+	public int getMinWGY() {
+		return minWGY;
+	}
 }

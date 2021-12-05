@@ -1,1 +1,20 @@
-debug: false
+#QuarryCraft2 Configuration
+
+# Maximum number of quarries per player
+quarry-limit: 5
+
+# Maximum allowed width and length for quarries
+max-quarry-width: 50
+max-quarry-length: 50
+
+# Show plugin welcome message
+welcome-message-enabled: true
+
+# Time a player must wait between guide book requests in milliseconds
+guide-book-cooldown: 300000
+
+# Enable WorldGuard support
+worldguard-enabled: true
+
+# Enable GriefPrevention support
+greifprevention-enabled: true

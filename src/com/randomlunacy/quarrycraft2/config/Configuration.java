@@ -37,7 +37,7 @@ public abstract class Configuration {
 
 	protected void createDefaultConfiguration(Boolean empty) {
 		try {
-			this.configFile = new File(QuarryCraft2._this().getDataFolder(), this.configName);
+			this.configFile = new File(QuarryCraft2.getInstance().getDataFolder(), this.configName);
 			if (!this.configFile.exists()) {
 				this.configFile.getParentFile().mkdirs();
 				if (empty) {
@@ -54,10 +54,10 @@ public abstract class Configuration {
 					in.close();
 				}
 			} else {
-				QuarryCraft2._this().logNotice("Found existing file at " + this.configName + " - not creating a new one");
+				QuarryCraft2.getInstance().logNotice("Found existing file at " + this.configName + " - not creating a new one");
 			}
 		} catch (IOException e) {
-			QuarryCraft2._this().logSevere("Error initializing config file " + this.configName);
+			QuarryCraft2.getInstance().logSevere("Error initializing config file " + this.configName);
 			e.printStackTrace();
 		}
 	}
@@ -71,7 +71,7 @@ public abstract class Configuration {
 			this.config.save(this.configFile);
 		  } catch (IOException e) {
 			e.printStackTrace();
-			QuarryCraft2._this().logSevere("Unable to save configuration file.");
+			QuarryCraft2.getInstance().logSevere("Unable to save configuration file.");
 		  }
 	}
 }
