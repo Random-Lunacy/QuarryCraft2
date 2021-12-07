@@ -6,19 +6,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.randomlunacy.quarrycraft2.QuarryCraft2;
+import com.randomlunacy.quarrycraft2.utils.Logger;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-
-import com.randomlunacy.quarrycraft2.QuarryCraft2;
 
 public abstract class Configuration {
 
 	private String resourceName;
 	protected String configName;
-		public String getConfigName() { return this.configName; }
+
+	public String getConfigName() {
+		return this.configName;
+	}
 
 	protected File configFile;
-		public File getConfigFile() { return this.configFile; }
+
+	public File getConfigFile() {
+		return this.configFile;
+	}
 
 	protected FileConfiguration config;
 
@@ -47,17 +54,17 @@ public abstract class Configuration {
 					OutputStream out = new FileOutputStream(this.configFile);
 					byte[] copyBuffer = new byte[1024];
 					int read;
-					while((read = in.read(copyBuffer)) > 0) {
+					while ((read = in.read(copyBuffer)) > 0) {
 						out.write(copyBuffer, 0, read);
 					}
 					out.close();
 					in.close();
 				}
 			} else {
-				QuarryCraft2.getInstance().logNotice("Found existing file at " + this.configName + " - not creating a new one");
+				Logger.logNotice("Found existing file at " + this.configName + " - not creating a new one");
 			}
 		} catch (IOException e) {
-			QuarryCraft2.getInstance().logSevere("Error initializing config file " + this.configName);
+			Logger.logSevere("Error initializing config file " + this.configName);
 			e.printStackTrace();
 		}
 	}
@@ -69,9 +76,9 @@ public abstract class Configuration {
 	public void saveConfiguration() {
 		try {
 			this.config.save(this.configFile);
-		  } catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
-			QuarryCraft2.getInstance().logSevere("Unable to save configuration file.");
-		  }
+			Logger.logSevere("Unable to save configuration file.");
+		}
 	}
 }

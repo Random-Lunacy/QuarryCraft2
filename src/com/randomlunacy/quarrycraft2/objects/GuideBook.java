@@ -52,7 +52,7 @@ public class GuideBook{
 		}
 		
 		else {
-			p.sendMessage(Messages.pleaseWaitBeforeNumSeconds((long)((QuarryCraft2.getInstance().getMainConfig().getGuideBookCooldown() - getTimeSinceLastUse(p))/1000.0)) + " " + (long)(((QuarryCraft2.getInstance().getMainConfig().getGuideBookCooldown() - getTimeSinceLastUse(p)))/1000.0));
+			p.sendMessage(Messages.getPleaseWait((long)((QuarryCraft2.getInstance().getMainConfig().getGuideBookCooldown() - getTimeSinceLastUse(p))/1000.0)) + " " + (long)(((QuarryCraft2.getInstance().getMainConfig().getGuideBookCooldown() - getTimeSinceLastUse(p)))/1000.0));
 		}
 	}
 }

@@ -6,8 +6,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 public class Messages {
+	private Messages() {
+	}
+
 	public static final String MESSAGE_PREFIX = ChatColor.GREEN + "[" + ChatColor.BLUE + QuarryCraft2.PLUGIN_NAME
-			+ ChatColor.GREEN + "]" + ChatColor.RESET;
+			+ ChatColor.GREEN + "] " + ChatColor.RESET;
 	private static final String RELOADING_CONFIG = MESSAGE_PREFIX + " Reloading config...";
 	private static final String PLEASE_WAIT = MESSAGE_PREFIX + ChatColor.RED
 			+ "Please wait %d seconds before using that command again." + ChatColor.RESET;
@@ -23,215 +26,174 @@ public class Messages {
 			+ "You have reached your quarry limit (%d)." + ChatColor.RESET;
 	private static final String INTERSECT_ERROR = MESSAGE_PREFIX + ChatColor.DARK_RED + "Quarries may not intersect!"
 			+ ChatColor.RESET;
-	private static final String MINING_CURSOR_RESET = MESSAGE_PREFIX + "Mining cursor reset to  y=" + ChatColor.DARK_GREEN
+	private static final String MINING_CURSOR_RESET = MESSAGE_PREFIX + "Mining cursor reset to  y="
+			+ ChatColor.DARK_GREEN
 			+ "%d" + ChatColor.RESET + ".";
-	private static final String QUARRY_DESTROYED = MESSAGE_PREFIX + ChatColor.DARK_RED + "Quarry at %s destroyed." + ChatColor.RESET;
-
-
+	private static final String QUARRY_DESTROYED = MESSAGE_PREFIX + ChatColor.DARK_RED
+			+ "The quarry at %s has been destroyed." + ChatColor.RESET;
 	private static final String QUARRY_OVERSIZED = MESSAGE_PREFIX + ChatColor.DARK_RED
-			+ "Your quarry is over the quarry area limit and is being restricted to a %dx%d area." + ChatColor.RESET;
-	private static final String quarryPausedBeforeCoords = ChatColor.YELLOW + "Your quarry at ";
-	private static final String quarryPausedAfterCoords = " has been paused.";
-	private static final String quarryUnpausedBeforeCoords = ChatColor.GREEN + "Your quarry at ";
-	private static final String quarryUnpausedAfterCoords = " is no longer paused.";
-	private static final String quarryModified = "Your quarry has been modified:";
-	private static final String miningDelay = "Mining Delay";
-	private static final String emeraldBlocksToUpgrade = "Emerald blocks to next upgrade";
-	private static final String blocksMinedAtATime = "Blocks mined at a time";
-	private static final String diamondBlocksToUpgrade = "Diamond blocks to next upgrade";
-	private static final String efficiency = "Efficiency";
-	private static final String enderReplaceDirt = "Ender mining replaces blocks with dirt";
-	private static final String quarryFinishedStatus = "The quarry is finished at";
-	private static final String quarryMiningStatus = "The quarry is mining at";
-	private static final String quarryPausedStatus = "The quarry is paused at";
-	private static final String miningModeToggled = "Mining mode toggled";
-	private static final String classic = "Classic";
-	private static final String ender = "Ender";
-	private static final String resumedBeforeCoords = ChatColor.GREEN + "Your quarry at ";
-	private static final String resumedAfterCoords = " has resumed working";
-	private static final String noSpaceBeforeCoords = ChatColor.RED + "Your quarry at ";
-	private static final String noSpaceAfterCoords = " has no space for new items and is now paused.";
-	private static final String noFuelBeforeCoords = ChatColor.RED + "Your quarry at ";
-	private static final String noFuelAfterCoords = " has run out of fuel and is now paused.";
-	private static final String finishedBeforeCoords = ChatColor.BLUE + "Your quarry at ";
-	private static final String finishedAfterCoords = " is now finished";
-	private static final String playerJoin1 = ChatColor.GREEN + "[" + QuarryCraft2.PLUGIN_NAME + "]" + ChatColor.WHITE
-			+ " Welcome ";
-	private static final String playerJoin2 = ChatColor.GREEN + "[" + QuarryCraft2.PLUGIN_NAME + "]" + ChatColor.WHITE
-			+ " This server has "
-			+ QuarryCraft2.PLUGIN_NAME + " installed.";
-	private static final String playerJoin3 = ChatColor.GREEN + "[" + QuarryCraft2.PLUGIN_NAME + "]" + ChatColor.WHITE
-			+ " Type "
-			+ ChatColor.BLUE + "/quarrycraft guide" + ChatColor.WHITE + " to get started!";
-	private static final String mayNotBuildHere = ChatColor.RED + "You may not build your quarry here!";
+			+ "Your quarry is over the area limit and is being restricted to a %dx%d area." + ChatColor.RESET;
+	private static final String QUARRY_PAUSED = MESSAGE_PREFIX + ChatColor.YELLOW + "The quarry at %s has been paused."
+			+ ChatColor.RESET;
+	private static final String QUARRY_RESTARTED = MESSAGE_PREFIX + ChatColor.GREEN
+			+ "The quarry at %s has resumed mining." + ChatColor.RESET;
+	private static final String QUARRY_MODIFIED = MESSAGE_PREFIX + "Your quarry at %s has been modified:";
+	private static final String QUARRY_FINISHED_STATUS = MESSAGE_PREFIX + "The quarry is finished at y="
+			+ ChatColor.DARK_BLUE + "%d" + ChatColor.RESET + ".";
+	private static final String QUARRY_MINING_STATUS = MESSAGE_PREFIX + "The quarry is mining at y="
+			+ ChatColor.DARK_BLUE + "%d" + ChatColor.RESET + ".";
+	private static final String QUARRY_PAUSED_STATUS = MESSAGE_PREFIX + "The quarry is paused at y="
+			+ ChatColor.DARK_GREEN + "%d" + ChatColor.RESET + ".";
+	private static final String MINING_MODE_TOGGLED = MESSAGE_PREFIX + "Mining mode toggled: %s" + ChatColor.RESET
+			+ ".";
+	private static final String MODE_CLASSIC = "Classic";
+	private static final String MODE_ENDER = "Ender";
+	private static final String NO_SPACE = MESSAGE_PREFIX + ChatColor.RED
+			+ "Your quarry at %s has no space for new items and is now paused." + ChatColor.RESET;
+	private static final String NO_FUEL = MESSAGE_PREFIX + ChatColor.RED
+			+ "Your quarry at %s has run out of fuel and is now paused." + ChatColor.RESET;
+	private static final String FINISHED = ChatColor.BLUE + "Your quarry at %s is now finished" + ChatColor.RESET;
+	private static final String WELCOME = MESSAGE_PREFIX + "Type "
+			+ ChatColor.BLUE + "/quarrycraft guide" + ChatColor.RESET + " to get started!";
+	private static final String BUILD_NOT_ALLOWED_HERE = MESSAGE_PREFIX + ChatColor.RED
+			+ "You may not build your quarry here." + ChatColor.RESET;
+
+	// Status messages
+	private static final String STATUS_MINING_DELAY = "    Mining Delay: " + ChatColor.DARK_GREEN + "%d"
+			+ ChatColor.RESET;
+	private static final String STATUS_EMERALD_TO_UPGRADE = "    Emerald blocks to next upgrade: " + ChatColor.GREEN
+			+ "%d" + ChatColor.RESET;
+	private static final String STATUS_MINING_RATE = "    Blocks mined at a time: " + ChatColor.DARK_BLUE + "%d"
+			+ ChatColor.RESET;
+	private static final String STATUS_DIAMOND_TO_UPGRADE = "    Diamond blocks to next upgrade: " + ChatColor.AQUA
+			+ "%d" + ChatColor.RESET;
+	private static final String STATUS_EFFICIENCY = "    Efficiency: " + ChatColor.YELLOW + "%.2f%" + ChatColor.RESET;
+	private static final String STATUS_MODE = "    Mining mode: " + ChatColor.GOLD + "%s" + ChatColor.RESET;
+	private static final String STATUS_ENDER_REPLACE = "    Replacing blocks with dirt: " + ChatColor.GOLD + "%b"
+			+ ChatColor.RESET;
 
 	public static String getMessagePrefix() {
 		return MESSAGE_PREFIX;
 	}
 
-	public static String reloadingConfig() {
+	public static String getReloadingConfig() {
 		return RELOADING_CONFIG;
 	}
 
-	public static String pleaseWaitBeforeNumSeconds(long seconds) {
+	public static String getPleaseWait(long seconds) {
 		return String.format(PLEASE_WAIT, seconds);
 	}
 
-	public static String noInteractPermission() {
+	public static String getNoInteractPermission() {
 		return NO_INTERACT_PERMISSION;
 	}
 
-	public static String blockCannotBeBroken() {
+	public static String getBlockCannotBeBroken() {
 		return BLOCK_CANNOT_BE_BROKEN;
 	}
 
-	public static String quarryCreated() {
+	public static String getQuarryCreated() {
 		return QUARRY_CREATED;
 	}
 
-
-
-	public Messages() {
-	}
-
-	public static String noBuildPermission() {
+	public static String getNoBuildPermission() {
 		return NO_BUILD_PERMISSION;
 	}
 
-	public static String quarryLimitReached(int limit) {
+	public static String getQuarryLimitReached(int limit) {
 		return String.format(QUARRY_LIMIT_REACHED, limit);
 	}
 
-	public String quarryIntersectError() {
+	public static String getQuarryIntersectError() {
 		return INTERSECT_ERROR;
 	}
 
-	public String miningCursorReset(int newY) {
+	public static String getMiningCursorReset(int newY) {
 		return String.format(MINING_CURSOR_RESET, newY);
 	}
 
-	public String quarryDestroyed(Location location) {
+	public static String getQuarryDestroyed(Location location) {
 		return String.format(QUARRY_DESTROYED, location.toVector().toString());
 	}
 
-	public String quarryOversized(int width, int length) {
+	public static String getQuarryOversized(int width, int length) {
 		return String.format(QUARRY_OVERSIZED, width, length);
 	}
 
-	public String quarryPausedBeforeCoords() {
-		return quarryPausedBeforeCoords;
+	public static String getQuarryPaused(Location location) {
+		return String.format(QUARRY_PAUSED, location.toVector().toString());
 	}
 
-	public String quarryPausedAfterCoords() {
-		return quarryPausedAfterCoords;
+	public static String getQuarryRestarted(Location location) {
+		return String.format(QUARRY_RESTARTED, location.toVector().toString());
 	}
 
-	public String quarryUnpausedBeforeCoords() {
-		return quarryUnpausedBeforeCoords;
+	public static String getQuarryModified(Location location) {
+		return String.format(QUARRY_MODIFIED, location.toVector().toString());
 	}
 
-	public String quarryUnpausedAfterCoords() {
-		return quarryUnpausedAfterCoords;
+	public static String getStatusMiningDelay(int delay) {
+		return String.format(STATUS_MINING_DELAY, delay);
 	}
 
-	public String quarryModified() {
-		return quarryModified;
+	public static String getStatusEmeraldBlocksToUpgrade(int count) {
+		return String.format(STATUS_EMERALD_TO_UPGRADE, count);
 	}
 
-	public String miningDelay() {
-		return miningDelay;
+	public static String getStatusMiningRate(int count) {
+		return String.format(STATUS_MINING_RATE, count);
 	}
 
-	public String emeraldBlocksToUpgrade() {
-		return emeraldBlocksToUpgrade;
+	public static String getStatusDiamondBlocksToUpgrade(int count) {
+		return String.format(STATUS_DIAMOND_TO_UPGRADE, count);
 	}
 
-	public String blocksMinedAtATime() {
-		return blocksMinedAtATime;
+	public static String getStatusEfficiency(float percentage) {
+		return String.format(STATUS_EFFICIENCY, percentage);
 	}
 
-	public String diamondBlocksToUpgrade() {
-		return diamondBlocksToUpgrade;
+	public static String getStatusMode(boolean classicMode) {
+		return String.format(STATUS_MODE, classicMode ? MODE_CLASSIC : MODE_ENDER);
 	}
 
-	public String efficiency() {
-		return efficiency;
+	public static String getStatusEnderReplace(boolean replacing) {
+		return String.format(STATUS_ENDER_REPLACE, replacing);
 	}
 
-	public String enderReplaceDirt() {
-		return enderReplaceDirt;
+	public static String getQuarryFinishedStatus() {
+		return QUARRY_FINISHED_STATUS;
 	}
 
-	public String quarryFinishedStatus() {
-		return quarryFinishedStatus;
+	public static String getQuarryMiningStatus() {
+		return QUARRY_MINING_STATUS;
 	}
 
-	public String quarryMiningStatus() {
-		return quarryMiningStatus;
+	public static String getQuarryPausedStatus() {
+		return QUARRY_PAUSED_STATUS;
 	}
 
-	public String quarryPausedStatus() {
-		return quarryPausedStatus;
+	public static String getMiningModeToggled(boolean classicMode) {
+		return String.format(MINING_MODE_TOGGLED,
+				classicMode ? ChatColor.GREEN + MODE_CLASSIC : ChatColor.BLUE + MODE_ENDER);
 	}
 
-	public String miningModeToggled() {
-		return miningModeToggled;
+	public static String getNoSpace(Location location) {
+		return String.format(NO_SPACE, location.toVector().toString());
 	}
 
-	public String classic() {
-		return classic;
+	public static String getNoFuel(Location location) {
+		return String.format(NO_FUEL, location.toVector().toString());
 	}
 
-	public String ender() {
-		return ender;
+	public static String getFinished(Location location) {
+		return String.format(FINISHED, location.toVector().toString());
 	}
 
-	public String resumedBeforeCoords() {
-		return resumedBeforeCoords;
+	public static String getWelcome() {
+		return WELCOME;
 	}
 
-	public String resumedAfterCoords() {
-		return resumedAfterCoords;
+	public static String mayNotBuildHere() {
+		return BUILD_NOT_ALLOWED_HERE;
 	}
-
-	public String noSpaceBeforeCoords() {
-		return noSpaceBeforeCoords;
-	}
-
-	public String noSpaceAfterCoords() {
-		return noSpaceAfterCoords;
-	}
-
-	public String noFuelBeforeCoords() {
-		return noFuelBeforeCoords;
-	}
-
-	public String noFuelAfterCoords() {
-		return noFuelAfterCoords;
-	}
-
-	public String finishedBeforeCoords() {
-		return finishedBeforeCoords;
-	}
-
-	public String finishedAfterCoords() {
-		return finishedAfterCoords;
-	}
-
-	public String playerJoin1() {
-		return playerJoin1;
-	}
-
-	public String playerJoin2() {
-		return playerJoin2;
-	}
-
-	public String playerJoin3() {
-		return playerJoin3;
-	}
-
-	public String mayNotBuildHere() {
-		return mayNotBuildHere;
-	}
-
 }

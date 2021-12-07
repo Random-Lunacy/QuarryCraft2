@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.randomlunacy.quarrycraft2.QuarryCraft2;
+import com.randomlunacy.quarrycraft2.utils.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -30,12 +31,13 @@ public class Quarries {
 	}
 
 	public Quarry getQuarry(Chest centreChest) {
-		for(Quarry quarry : myQuarries) {
-			if(quarry.isSameCentreChest(centreChest)) return quarry;
+		for (Quarry quarry : myQuarries) {
+			if (quarry.isSameCentreChest(centreChest))
+				return quarry;
 		}
 		return null;
 	}
-	
+
 	public void removeQuarry(Quarry q) {
 		int i = findQuarryIndex(q);
 		if (i != -1) {
@@ -46,8 +48,8 @@ public class Quarries {
 	}
 
 	private int findQuarryIndex(Quarry q) {
-		for(int i=0; i<myQuarries.size(); i++) {
-			if(q.getLocation().equals(myQuarries.get(i).getLocation()) ) {
+		for (int i = 0; i < myQuarries.size(); i++) {
+			if (q.getLocation().equals(myQuarries.get(i).getLocation())) {
 				return i;
 			}
 		}
@@ -59,10 +61,11 @@ public class Quarries {
 	private static boolean isFileExists(File file) {
 		return file.exists() && !file.isDirectory();
 	}
-	
-	//TODO: Update to store in plugin configuration folder rather than world folders
+
+	// TODO: Update to store in plugin configuration folder rather than world
+	// folders
 	public void saveQuarries() {
-		for(World w : Bukkit.getWorlds()) {
+		for (World w : Bukkit.getWorlds()) {
 			String wName = w.getName();
 			String fileSeparator = System.getProperty("file.separator");
 			File folder = new File(wName + fileSeparator + QuarryCraft2.PLUGIN_NAME);
@@ -71,50 +74,55 @@ public class Quarries {
 			File quarryFile = new File(path);
 			quarryFile.delete();
 			String fileString = "";
-			for(Quarry q : myQuarries) {
+			for (Quarry q : myQuarries) {
 				Location quarryLoc = q.getLocation();
-				if(!quarryLoc.getWorld().getName().equals(wName)) continue;
+				if (!quarryLoc.getWorld().getName().equals(wName))
+					continue;
 				int minX = q.getMinX();
 				int minZ = q.getMinZ();
 				int maxX = q.getMaxX();
 				int maxZ = q.getMaxZ();
-				fileString += quarryLoc.getWorld().getName() + ";" + quarryLoc.getBlockX() + ";" + quarryLoc.getBlockY() + ";" + quarryLoc.getBlockZ() + ";" + minX + ";" + minZ + ";" + maxX + ";" + maxZ + ";" + q.isClassicMode() + ";" + q.getOwner()+";"+q.isPaused()+"\n";		
+				fileString += quarryLoc.getWorld().getName() + ";" + quarryLoc.getBlockX() + ";" + quarryLoc.getBlockY()
+						+ ";" + quarryLoc.getBlockZ() + ";" + minX + ";" + minZ + ";" + maxX + ";" + maxZ + ";"
+						+ q.isClassicMode() + ";" + q.getOwner() + ";" + q.isPaused() + "\n";
 			}
-			
+
 			try {
 				FileOutputStream fos = new FileOutputStream(path);
 				fos.write(fileString.getBytes());
 				fos.flush();
 				fos.close();
 			} catch (IOException e) {
-				QuarryCraft2.getInstance().logSevere("Failure writing to '" + path + "'': " + e);
+				Logger.logSevere("Failure writing to '" + path + "'': " + e);
 			}
 		}
-		
+
 	}
 
-	//TODO: Update to store in plugin configuration folder rather than world folders
+	// TODO: Update to store in plugin configuration folder rather than world
+	// folders
 	private void loadQuarries() {
-		for(World w : Bukkit.getWorlds()) {
+		for (World w : Bukkit.getWorlds()) {
 			String wName = w.getName();
 			String fileSeparator = System.getProperty("file.separator");
 			String path = wName + fileSeparator + QuarryCraft2.PLUGIN_NAME + fileSeparator + "qc2-quarries.txt";
 
 			if (!isFileExists(new File(path))) {
-				// No qc2-quarries.txt exists, create one. 
+				// No qc2-quarries.txt exists, create one.
 				saveQuarries();
-			}			
+			}
 			try {
 				BufferedReader inFile = new BufferedReader(new FileReader(path));
 				String currentCoords;
 				String[] locString;
 				int minX, minZ, maxX, maxZ;
 				boolean classicMode;
-				int x,y,z;
+				int x, y, z;
 				String ownerName;
 				do {
 					currentCoords = inFile.readLine();
-					if(currentCoords == null) break;
+					if (currentCoords == null)
+						break;
 					locString = currentCoords.split(";");
 					x = Integer.parseInt(locString[1]);
 					y = Integer.parseInt(locString[2]);
@@ -125,24 +133,25 @@ public class Quarries {
 					maxZ = Integer.parseInt(locString[7]);
 					ownerName = locString[9].trim();
 					boolean isPaused = false;
-					if(locString.length == 11) isPaused = locString[10].trim().equals("true");
+					if (locString.length == 11)
+						isPaused = locString[10].trim().equals("true");
 					classicMode = locString[8].trim().contentEquals("true");
 					Location quarryLoc = new Location(Bukkit.getWorld(locString[0]), x, y, z);
-					addQuarry(quarryLoc, minX, maxX, minZ, maxZ, classicMode,ownerName, isPaused);
-						
-				} while(currentCoords != null);
+					addQuarry(quarryLoc, minX, maxX, minZ, maxZ, classicMode, ownerName, isPaused);
+
+				} while (currentCoords != null);
 				inFile.close();
-			}
-			catch (IOException e) {
-				QuarryCraft2.getInstance().logSevere("Failure reading from '" + path + "'': " + e);
+			} catch (IOException e) {
+				Logger.logSevere("Failure reading from '" + path + "'': " + e);
 			}
 		}
 	}
 
 	public boolean addQuarry(Chest centreChest, String name) {
-		if(getQuarry(centreChest) == null) {
+		if (getQuarry(centreChest) == null) {
 			Quarry quarry = new Quarry(centreChest, name);
-			if(quarryIntersects(quarry)) return false;
+			if (quarryIntersects(quarry))
+				return false;
 			myQuarries.add(quarry);
 			quarry.runTaskTimer(QuarryCraft2.getInstance(), 0, 0);
 			return true;
@@ -150,10 +159,13 @@ public class Quarries {
 		return false;
 	}
 
-	public boolean addQuarry(Location centreChestLocation, int minX, int maxX, int minZ, int maxZ, boolean mode, String name, boolean paused) {
-		if(centreChestLocation.getWorld().getBlockAt(centreChestLocation).getType().equals(Material.CHEST)) {
-			Quarry quarry = new Quarry((Chest)centreChestLocation.getWorld().getBlockAt(centreChestLocation).getState(), minX, maxX, minZ, maxZ, mode, name);
-			if(quarryIntersects(quarry)) {
+	public boolean addQuarry(Location centreChestLocation, int minX, int maxX, int minZ, int maxZ, boolean mode,
+			String name, boolean paused) {
+		if (centreChestLocation.getWorld().getBlockAt(centreChestLocation).getType().equals(Material.CHEST)) {
+			Quarry quarry = new Quarry(
+					(Chest) centreChestLocation.getWorld().getBlockAt(centreChestLocation).getState(), minX, maxX, minZ,
+					maxZ, mode, name);
+			if (quarryIntersects(quarry)) {
 				return false;
 			}
 			quarry.setPaused(paused);
@@ -166,29 +178,26 @@ public class Quarries {
 
 	public int countQuarries(Player p) {
 		int count = 0;
-		for(Quarry q : myQuarries)
-			if(q.isOwner(p)) count++;
-		return count;
-	}	
-
-	private boolean ptIntersects(World w, int x, int z) {
 		for (Quarry q : myQuarries)
-			if(q.ptIntersects(w, x, z)) return true;
-		return false;
+			if (q.isOwner(p))
+				count++;
+		return count;
 	}
-	
+
 	private boolean quarryIntersects(Quarry qc) {
-		for(Quarry q : myQuarries) {
-			if(qc.getCentreChestLocation().equals(q.getCentreChestLocation())) continue;
-			if(q.ptIntersects(qc.getWorld(), qc.getMinX(), qc.getMinZ())) return true;
-			if(q.ptIntersects(qc.getWorld(), qc.getMinX(), qc.getMaxZ())) return true;
-			if(q.ptIntersects(qc.getWorld(), qc.getMaxX(), qc.getMinZ())) return true;
-			if(q.ptIntersects(qc.getWorld(), qc.getMaxX(), qc.getMaxZ())) return true;
-			if(qc.ptIntersects(q.getWorld(), q.getMinX(), q.getMinZ())) return true;
-			if(qc.ptIntersects(q.getWorld(), q.getMinX(), q.getMaxZ())) return true;
-			if(qc.ptIntersects(q.getWorld(), q.getMaxX(), q.getMinZ())) return true;
-			if(qc.ptIntersects(q.getWorld(), q.getMaxX(), q.getMaxZ())) return true;
+		for (Quarry q : myQuarries) {
+			if (qc.getCentreChestLocation().equals(q.getCentreChestLocation()))
+				continue;
+			if (q.ptIntersects(qc.getWorld(), qc.getMinX(), qc.getMinZ())
+				|| q.ptIntersects(qc.getWorld(), qc.getMinX(), qc.getMaxZ())
+				|| q.ptIntersects(qc.getWorld(), qc.getMaxX(), qc.getMinZ())
+				|| q.ptIntersects(qc.getWorld(), qc.getMaxX(), qc.getMaxZ())
+				|| qc.ptIntersects(q.getWorld(), q.getMinX(), q.getMinZ())
+				|| qc.ptIntersects(q.getWorld(), q.getMinX(), q.getMaxZ())
+				|| qc.ptIntersects(q.getWorld(), q.getMaxX(), q.getMinZ())
+				|| qc.ptIntersects(q.getWorld(), q.getMaxX(), q.getMaxZ()))
+				return true;
 		}
 		return false;
-	}	
+	}
 }

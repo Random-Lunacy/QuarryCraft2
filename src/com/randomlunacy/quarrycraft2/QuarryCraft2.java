@@ -2,7 +2,6 @@ package com.randomlunacy.quarrycraft2;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import com.randomlunacy.quarrycraft2.commands.ExampleCommand;
 import com.randomlunacy.quarrycraft2.config.MainConfiguration;
@@ -31,8 +30,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import net.md_5.bungee.api.ChatColor;
-
 public class QuarryCraft2 extends JavaPlugin {
 
 	public static final String PLUGIN_NAME = "QuarryCraft2";
@@ -45,18 +42,13 @@ public class QuarryCraft2 extends JavaPlugin {
 	private GuideBook gbGiver;
 
 	private MainConfiguration configuration;
-	private Messages messageConfiguration;
 
-	public static QuarryCraft2 getInstance() {
+	public static synchronized QuarryCraft2 getInstance() {
 		return pluginInstance;
 	}
 
 	public MainConfiguration getMainConfig() {
 		return configuration;
-	}
-
-	public Messages getMessageConfiguration() {
-		return messageConfiguration;
 	}
 
 	private static synchronized void setInstance(QuarryCraft2 instance) {
@@ -74,7 +66,6 @@ public class QuarryCraft2 extends JavaPlugin {
 		// Save default configs if they not exist. Then load the configurations into
 		// memory
 		configuration = new MainConfiguration();
-		messageConfiguration = new Messages();
 
 		gbGiver = new GuideBook();
 
@@ -87,26 +78,10 @@ public class QuarryCraft2 extends JavaPlugin {
 	 * For improved reload behavior, try to reset the plugin to it's initial state
 	 * here.
 	 */
+	@Override
 	public void onDisable() {
+		quarries.saveQuarries();
 		this.getServer().getScheduler().cancelTasks(this);
-	}
-
-	public void logDebug(String message) {
-		if (configuration.isDebugEnabled()) {
-			this.getServer().getLogger().log(Level.INFO, message);
-		}
-	}
-
-	public void logNotice(String message) {
-		this.getServer().getLogger().log(Level.INFO, message);
-	}
-
-	public void logWarning(String message) {
-		this.getServer().getLogger().log(Level.WARNING, message);
-	}
-
-	public void logSevere(String message) {
-		this.getServer().getLogger().log(Level.SEVERE, message);
 	}
 
 	private void setupCommands() {
@@ -131,7 +106,7 @@ public class QuarryCraft2 extends JavaPlugin {
 		@Override
 		public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
 			if (args.length == 1 && sender.isOp() && args[0].equals("reload")) {
-				sender.sendMessage(Messages.reloadingConfig());
+				sender.sendMessage(Messages.getReloadingConfig());
 				configuration = new MainConfiguration();
 				return true;
 			}
@@ -157,21 +132,6 @@ public class QuarryCraft2 extends JavaPlugin {
 			if (sender.isOp())
 				ls.add("reload");
 
-			/*
-			 * if(args.length == 1 && args[0].equals("permission") && sender.isOp()) {
-			 * ls.add("allow");
-			 * ls.add("deny");
-			 * }
-			 * 
-			 * if(args.length == 2 && args[0].equals("permission") && sender.isOp() &&
-			 * (args[1].equals("allow") || args[1].equals("deny")) ) {
-			 * ls.add("all-online");
-			 * for(World w : Bukkit.getWorlds())
-			 * for(Player p : w.getPlayers())
-			 * ls.add(p.getName());
-			 * }
-			 */
-
 			return ls;
 		}
 	}
@@ -184,9 +144,7 @@ public class QuarryCraft2 extends JavaPlugin {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		if (configuration.isWelcomeMessageEnabled()) {
-			e.getPlayer().sendMessage(messageConfiguration.playerJoin1() + " " + e.getPlayer().getName());
-			e.getPlayer().sendMessage(messageConfiguration.playerJoin2());
-			e.getPlayer().sendMessage(messageConfiguration.playerJoin3());
+			e.getPlayer().sendMessage(Messages.getWelcome());
 		}
 	}
 
@@ -197,7 +155,6 @@ public class QuarryCraft2 extends JavaPlugin {
 	public void pistonRetractEvent(BlockPistonRetractEvent e) {
 		Location pLoc = e.getBlock().getLocation();
 		if (!pistonAllowed(pLoc.getWorld(), pLoc.getBlockX(), pLoc.getBlockY(), pLoc.getBlockZ())) {
-			// Bukkit.broadcastMessage("Cancelling retract event");
 			e.setCancelled(true);
 		}
 	}
@@ -209,7 +166,6 @@ public class QuarryCraft2 extends JavaPlugin {
 	public void pistonExtendEvent(BlockPistonExtendEvent e) {
 		Location pLoc = e.getBlock().getLocation();
 		if (!pistonAllowed(pLoc.getWorld(), pLoc.getBlockX(), pLoc.getBlockY(), pLoc.getBlockZ())) {
-			// Bukkit.broadcastMessage("Cancelling extend event");
 			e.setCancelled(true);
 		}
 	}
@@ -221,13 +177,13 @@ public class QuarryCraft2 extends JavaPlugin {
 	public void onPlayerLeftClick(PlayerInteractEvent e) {
 		if (e.getAction().equals(Action.LEFT_CLICK_BLOCK) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			if (!canInteract(e.getClickedBlock().getLocation(), e.getPlayer())) {
-				e.getPlayer().sendMessage(Messages.noInteractPermission());
+				e.getPlayer().sendMessage(Messages.getNoInteractPermission());
 				e.setCancelled(true);
 				return;
 			}
 			if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)
 					&& !canBreak(e.getClickedBlock().getLocation(), e.getPlayer())) {
-				e.getPlayer().sendMessage(Messages.blockCannotBeBroken());
+				e.getPlayer().sendMessage(Messages.getBlockCannotBeBroken());
 				e.setCancelled(true);
 				return;
 			}
@@ -257,21 +213,22 @@ public class QuarryCraft2 extends JavaPlugin {
 							&& quarries.countQuarries(e.getPlayer()) < configuration.getQuarryLimit()
 							&& quarries.addQuarry(centreChest, e.getPlayer().getName())) {
 						if (!quarries.getQuarry(centreChest).isMarkedForDeletion())
-							e.getPlayer().sendMessage(messageConfiguration.quarryCreated());
+							e.getPlayer().sendMessage(Messages.getQuarryCreated());
 						e.setCancelled(true);
 					} else if (quarries.getQuarry(centreChest) != null) {
 						if (!quarries.getQuarry(centreChest).isMarkedForDeletion())
 							e.getPlayer().sendMessage(quarries.getQuarry(centreChest).toggleEnderMining());
 						e.setCancelled(true);
 					} else if (!hasPermission(e.getPlayer(), BUILD_QUARRIES_PERMISSION)) {
-						e.getPlayer().sendMessage(messageConfiguration.noBuildPermission());
+						e.getPlayer().sendMessage(Messages.getNoBuildPermission());
 						e.setCancelled(true);
 					} else if (quarries.countQuarries(e.getPlayer()) >= configuration.getQuarryLimit()) {
 						e.getPlayer()
-								.sendMessage(messageConfiguration.quarryLimitReached(configuration.getQuarryLimit()));
+								.sendMessage(
+										Messages.getQuarryLimitReached(configuration.getQuarryLimit()));
 						e.setCancelled(true);
 					} else {
-						e.getPlayer().sendMessage(messageConfiguration.quarryIntersectError());
+						e.getPlayer().sendMessage(Messages.getQuarryIntersectError());
 						e.setCancelled(true);
 					}
 					quarries.saveQuarries();
@@ -281,7 +238,7 @@ public class QuarryCraft2 extends JavaPlugin {
 				for (Quarry q : quarries.getQuarries()) {
 					if (q.isIn3x3(clicked)) {
 						q.resetMiningCursor();
-						e.getPlayer().sendMessage(messageConfiguration.miningCursorReset(q.getNextY()));
+						e.getPlayer().sendMessage(Messages.getMiningCursorReset(q.getNextY()));
 						e.setCancelled(true);
 						return;
 					}
@@ -333,7 +290,7 @@ public class QuarryCraft2 extends JavaPlugin {
 			for (Quarry q : quarries.getQuarries())
 				if ((q.isMarkedForDeletion() || !Quarry.isQuarryLayout(q.getCentreChest())) && q.isClearedPlatform()) {
 
-					q.tellOwner(messageConfiguration.quarryDestroyed(q.getCentreChestLocation()));
+					q.tellOwner(Messages.getQuarryDestroyed(q.getCentreChestLocation()));
 					quarries.removeQuarry(q);
 					return;
 				}
