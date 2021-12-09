@@ -11,17 +11,28 @@ depend: []
 softdepend: []
 
 commands:
-  example:
-    aliases: [ 'exmple' ]
-    description: This is an example command
-    permission-message:  Permission quarrycraft2.example is required to use this command
-    usage: /<command> to use the example command.
+  reload:
+    aliases: [ 'qc2reload' ]
+    description: Reload the configuration
+    permission-message: Permission quarrycraft2.reload is required to use this command
+    usage: /<command> to reload the QuarryCraft2 configuration.
+  guide:
+    aliases: [ 'qc2guide' ]
+    description: Gives player a guide to QuarryCraft2
+    permission-message: Permission quarrycraft2.guide is required to use this command
+    usage: /<command> to receive a QuarryCraft2 guide
 
 permissions:
   quarrycraft2.*:
-    description: Gives access to all quarrycraft2 commands
+    description: Gives access to all QuarryCraft2 commands
     children:
-      quarrycraft2.example: true
-  quarrycraft2.example:
-    description: Gives access to tempateus' example command
+      quarrycraft2.reload: true
+  quarrycraft2.reload:
+    description: Gives access to hte qc2reload command
+    default: op
+  quarrycraft2.guide:
+    description: Gives access to the qc2guide command
+    default: true
+  quarrycraft2.build:
+    description: Gives permission to build quarries
     default: op

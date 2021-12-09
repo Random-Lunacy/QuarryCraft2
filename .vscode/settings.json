@@ -1,8 +1,6 @@
 {
 	"java.configuration.updateBuildConfiguration": "automatic",
 	"editor.tabSize": 4,
-	"editor.insertSpaces": false,
-	"editor.detectIndentation": false,
 	"cSpell.customDictionaries": {
 		"custom-dictionary-workspace": {
 			"name": "custom-dictionary-workspace",
@@ -10,5 +8,6 @@
 			"addWords": true,
 			"scope": "workspace"
 		}
-	}
+	},
+	"java.format.settings.url": ".vscode/java-formatter-config.xml"
 }
