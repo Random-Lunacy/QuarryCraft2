@@ -46,6 +46,7 @@ public class Quarry extends BukkitRunnable {
     String owner;
     boolean paused;
     boolean finished;
+    int worldBottom = -64;
 
     int emeraldBlocks = 0;
     int diamondBlocks = 0;
@@ -410,18 +411,18 @@ public class Quarry extends BukkitRunnable {
 
     public void sendProgress() {
         if (finished)
-            tellOwner(Messages.getQuarryFinishedStatus() + " y=" + ChatColor.DARK_BLUE + nextY);
+            tellOwner(Messages.getQuarryFinishedStatus(nextY));
         else if (!paused)
-            tellOwner(Messages.getQuarryMiningStatus() + " y=" + ChatColor.DARK_GREEN + nextY);
-        else tellOwner(Messages.getQuarryPausedStatus() + " y=" + ChatColor.YELLOW + nextY);
+            tellOwner(Messages.getQuarryMiningStatus(nextY));
+        else tellOwner(Messages.getQuarryPausedStatus(nextY));
     }
 
     public void sendProgress(Player p) {
         if (finished)
-            p.sendMessage(Messages.getQuarryFinishedStatus() + " y=" + ChatColor.DARK_BLUE + nextY);
+            p.sendMessage(Messages.getQuarryFinishedStatus(nextY));
         else if (!paused)
-            p.sendMessage(Messages.getQuarryMiningStatus() + " y=" + ChatColor.DARK_GREEN + nextY);
-        else p.sendMessage(Messages.getQuarryPausedStatus() + " y=" + ChatColor.YELLOW + nextY);
+            p.sendMessage(Messages.getQuarryMiningStatus(nextY));
+        else p.sendMessage(Messages.getQuarryPausedStatus(nextY));
     }
 
     public boolean isSameCentreChest(Chest someCentreChest) {
@@ -825,7 +826,7 @@ public class Quarry extends BukkitRunnable {
     }
 
     public void moveMiningCursor() {
-        if (nextX == maxX && nextY == 0 && nextZ == maxZ) {
+        if (nextX == maxX && nextY == worldBottom && nextZ == maxZ) {
             finished = true;
             return;
         }
@@ -865,7 +866,7 @@ public class Quarry extends BukkitRunnable {
         while (isIgnored(currentBlock.getType())) {
             moveMiningCursor();
             currentBlock = world.getBlockAt(nextX, nextY, nextZ);
-            if (nextX == maxX && nextY == 0 && nextZ == maxZ)
+            if (nextX == maxX && nextY == worldBottom && nextZ == maxZ)
                 break;
         }
         return currentBlock;
@@ -884,12 +885,12 @@ public class Quarry extends BukkitRunnable {
                 moveMiningCursor();
                 blockToMine = findNextBlock();
                 thisMaterial = blockToMine.getType();
-                if (nextX == maxX && nextY == 0 && nextZ == maxZ)
+                if (nextX == maxX && nextY == worldBottom && nextZ == maxZ)
                     break;
             }
             if (thisMaterial.equals(Material.AIR) || thisMaterial.equals(Material.WATER) || thisMaterial.equals(Material.LAVA)
                     || thisMaterial.equals(Material.BEDROCK)) {
-                if (nextX == maxX && nextY == 0 && nextZ == maxZ && !alerted) {
+                if (nextX == maxX && nextY == worldBottom && nextZ == maxZ && !alerted) {
                     alerted = true;
                     finished = true;
                     tellOwner(Messages.getFinished(centreChestLocation));
@@ -935,7 +936,7 @@ public class Quarry extends BukkitRunnable {
             Material thisMaterial = blockToMine.getType();
             if (thisMaterial.equals(Material.AIR) || thisMaterial.equals(Material.WATER) || thisMaterial.equals(Material.LAVA)
                     || thisMaterial.equals(Material.BEDROCK)) {
-                if (nextX == maxX && nextY == 0 && nextZ == maxZ && !alerted) {
+                if (nextX == maxX && nextY == worldBottom && nextZ == maxZ && !alerted) {
                     alerted = true;
                     finished = true;
                     tellOwner(Messages.getFinished(centreChestLocation));

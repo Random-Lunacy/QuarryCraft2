@@ -156,16 +156,16 @@ public class Messages {
         return String.format(STATUS_ENDER_REPLACE, replacing);
     }
 
-    public static String getQuarryFinishedStatus() {
-        return QUARRY_FINISHED_STATUS;
+    public static String getQuarryFinishedStatus(int y) {
+        return String.format(QUARRY_FINISHED_STATUS, y);
     }
 
-    public static String getQuarryMiningStatus() {
-        return QUARRY_MINING_STATUS;
+    public static String getQuarryMiningStatus(int y) {
+        return String.format(QUARRY_MINING_STATUS, y);
     }
 
-    public static String getQuarryPausedStatus() {
-        return QUARRY_PAUSED_STATUS;
+    public static String getQuarryPausedStatus(int y) {
+        return String.format(QUARRY_PAUSED_STATUS, y);
     }
 
     public static String getMiningModeToggled(boolean classicMode) {
