@@ -156,6 +156,7 @@ public class Quarry extends BukkitRunnable {
                 tellOwner(Messages.getQuarryRestarted(centreChestLocation));
             alerted = false;
         }
+        resetPlatformCursor();
         platformDone = false; // Force it to recreate the platform with the new color glass
     }
 
