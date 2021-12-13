@@ -63,7 +63,7 @@ public class Messages {
             "    Blocks mined at a time: " + ChatColor.DARK_BLUE + "%d" + ChatColor.RESET;
     private static final String STATUS_DIAMOND_TO_UPGRADE =
             "    Diamond blocks to next upgrade: " + ChatColor.AQUA + "%d" + ChatColor.RESET;
-    private static final String STATUS_EFFICIENCY = "    Efficiency:" + ChatColor.YELLOW + " %.2f%" + ChatColor.RESET;
+    private static final String STATUS_EFFICIENCY = "    Efficiency:" + ChatColor.YELLOW + " %.2f %" + ChatColor.RESET;
     private static final String STATUS_MODE = "    Mining mode: " + ChatColor.GOLD + "%s" + ChatColor.RESET;
     private static final String STATUS_ENDER_REPLACE =
             "    Replacing blocks with dirt: " + ChatColor.GOLD + "%b" + ChatColor.RESET;
