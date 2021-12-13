@@ -156,6 +156,7 @@ public class Quarry extends BukkitRunnable {
                 tellOwner(Messages.getQuarryRestarted(centreChestLocation));
             alerted = false;
         }
+        platformDone = false; // Force it to recreate the platform with the new color glass
     }
 
     public boolean isOwner(Player p) {
@@ -256,8 +257,14 @@ public class Quarry extends BukkitRunnable {
 
                 else {
                     if (classicMode)
-                        currentBlock.setType(Material.GREEN_STAINED_GLASS);
-                    else {
+                    {
+                        if(this.isPaused())
+                        {
+                            currentBlock.setType(Material.RED_STAINED_GLASS);
+                        } else {
+                            currentBlock.setType(Material.GREEN_STAINED_GLASS);
+                        }
+                    } else {
                         currentBlock.setType(Material.PURPLE_STAINED_GLASS);
                         world.spawnParticle(Particle.DRAGON_BREATH, currentBlock.getLocation(), 1);
                     }
