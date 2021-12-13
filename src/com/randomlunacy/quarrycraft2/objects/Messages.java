@@ -68,6 +68,9 @@ public class Messages {
     private static final String STATUS_ENDER_REPLACE =
             "    Replacing blocks with dirt: " + ChatColor.GOLD + "%b" + ChatColor.RESET;
 
+    private static final String STATUS_SILK = "     Silk Touch: " + ChatColor.BOLD + "On" + ChatColor.RESET;
+    private static final String STATUS_FORTUNE = "  Fortune Level: " + ChatColor.BOLD + "%d" + ChatColor.RESET;
+
     public static String getMessagePrefix() {
         return MESSAGE_PREFIX;
     }
@@ -154,6 +157,14 @@ public class Messages {
 
     public static String getStatusEnderReplace(boolean replacing) {
         return String.format(STATUS_ENDER_REPLACE, replacing);
+    }
+
+    public static String getStatusSilkTouch(boolean silking) {
+        return String.format(STATUS_SILK, silking);
+    }
+
+    public static String getStatusFortune(int fortuneLevel) {
+        return String.format(STATUS_FORTUNE, fortuneLevel);
     }
 
     public static String getQuarryFinishedStatus(int y) {
