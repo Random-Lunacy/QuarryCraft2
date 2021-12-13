@@ -265,7 +265,13 @@ public class Quarry extends BukkitRunnable {
                             currentBlock.setType(Material.GREEN_STAINED_GLASS);
                         }
                     } else {
-                        currentBlock.setType(Material.PURPLE_STAINED_GLASS);
+                        if(this.isPaused())
+                        {
+                            currentBlock.setType(Material.MAGENTA_STAINED_GLASS);
+
+                        } else {
+                            currentBlock.setType(Material.PURPLE_STAINED_GLASS);
+                        }
                         world.spawnParticle(Particle.DRAGON_BREATH, currentBlock.getLocation(), 1);
                     }
 
@@ -294,8 +300,10 @@ public class Quarry extends BukkitRunnable {
             Block currentBlock = world.getBlockAt(platX, centreChestLocation.getBlockY() - 1, platZ);
             if (currentBlock.getType().equals(Material.BLACK_STAINED_GLASS)
                     || currentBlock.getType().equals(Material.GREEN_STAINED_GLASS)
+                    || currentBlock.getType().equals(Material.RED_STAINED_GLASS)
                     || currentBlock.getType().equals(Material.CYAN_STAINED_GLASS)
                     || currentBlock.getType().equals(Material.PURPLE_STAINED_GLASS)
+                    || currentBlock.getType().equals(Material.MAGENTA_STAINED_GLASS)
                     || currentBlock.getType().equals(Material.WHITE_STAINED_GLASS)) {
                 world.playSound(currentBlock.getLocation(), Sound.BLOCK_GLASS_BREAK, 1f, 1f);
                 currentBlock.setType(Material.DIRT);
@@ -593,7 +601,13 @@ public class Quarry extends BukkitRunnable {
         return false;
     }
 
+    /**
+     * Store the mined block
+     * @param mat
+     * @return
+     */
     public boolean addMined(Material mat) {
+        //TODO: Change the mat parameter to an ItemStack
         if (isFiltered(mat)) {
             return true;
         }
