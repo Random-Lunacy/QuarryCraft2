@@ -686,9 +686,9 @@ public class Quarry extends BukkitRunnable {
         {
             boolean filtered = false; 
             //Look for frames for filtering - Start with UP as the only location to support
-            if(toCheck.getRelative(BlockFace.UP).getType().equals(Material.ITEM_FRAME))
+            if(toCheck.getRelative(BlockFace.UP, 1).getType().equals(Material.ITEM_FRAME))
             {
-                ItemFrame frame = (ItemFrame) toCheck.getRelative(BlockFace.UP).getState();
+                ItemFrame frame = (ItemFrame) toCheck.getRelative(BlockFace.UP, 1).getState();
                 if(!frame.getItem().getType().equals(mat))
                 {
                     return false; 
