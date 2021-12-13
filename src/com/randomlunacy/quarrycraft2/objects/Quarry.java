@@ -916,16 +916,10 @@ public class Quarry extends BukkitRunnable {
             while (thisMaterial.equals(Material.AIR) || thisMaterial.equals(Material.WATER)
                     || thisMaterial.equals(Material.LAVA) || thisMaterial.equals(Material.BEDROCK) 
                     || thisMaterial.equals(Material.GLASS)) {
-                if(thisMaterial.equals(Material.WATER))
-                {
-                    blockToMine.setType(Material.GLASS, false);
-                }
-                if(thisMaterial.equals(Material.LAVA))
-                {
-                    blockToMine.setType(Material.GLASS, false);
-                }
                 moveMiningCursor();
                 blockToMine = findNextBlock();
+                handleFluid(Material.WATER, blockToMine);
+                handleFluid(Material.LAVA, blockToMine);
                 thisMaterial = blockToMine.getType();
                 if (nextX == maxX && nextY == worldBottom && nextZ == maxZ)
                     break;
