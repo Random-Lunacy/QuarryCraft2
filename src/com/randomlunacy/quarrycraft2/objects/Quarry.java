@@ -10,6 +10,7 @@ import com.randomlunacy.quarrycraft2.handlers.GriefPreventionHandler;
 import com.randomlunacy.quarrycraft2.handlers.WorldGuardHandler;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -684,6 +685,15 @@ public class Quarry extends BukkitRunnable {
     {
 
         Block toCheck = world.getBlockAt(x, y, z);
+
+        //Ensure the chunk is loaded, so that entities are loaded. 
+        Chunk chunk = world.getChunkAt(toCheck);
+        if(!chunk.isLoaded()) chunk.load();
+
+        if(!chunk.isForceLoaded())
+        {
+            chunk.setForceLoaded(true);
+        }
 
         if (toCheck.getType().equals(Material.CHEST) || toCheck.getType().equals(Material.TRAPPED_CHEST)) 
         {
