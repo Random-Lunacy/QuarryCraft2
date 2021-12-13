@@ -689,7 +689,7 @@ public class Quarry extends BukkitRunnable {
             if(toCheck.getRelative(BlockFace.UP).getType().equals(Material.ITEM_FRAME))
             {
                 ItemFrame frame = (ItemFrame) toCheck.getRelative(BlockFace.UP).getState();
-                if(frame.getAttachedFace().equals(BlockFace.DOWN) && !frame.getItem().getType().equals(mat))
+                if(!frame.getItem().getType().equals(mat))
                 {
                     return false; 
                 }
