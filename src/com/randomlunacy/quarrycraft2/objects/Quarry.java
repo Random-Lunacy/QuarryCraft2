@@ -2,6 +2,7 @@ package com.randomlunacy.quarrycraft2.objects;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import com.randomlunacy.quarrycraft2.QuarryCraft2;
@@ -18,6 +19,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.block.ShulkerBox;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -686,14 +689,24 @@ public class Quarry extends BukkitRunnable {
         {
             boolean filtered = false; 
             //Look for frames for filtering - Start with UP as the only location to support
-            if(toCheck.getRelative(BlockFace.UP, 1).getType().equals(Material.ITEM_FRAME))
+            Collection<Entity> entities = world.getNearbyEntities(toCheck.getRelative(BlockFace.UP).getLocation(), 1, 1, 1);
+            if(!entities.isEmpty())
             {
-                ItemFrame frame = (ItemFrame) toCheck.getRelative(BlockFace.UP, 1).getState();
-                if(!frame.getItem().getType().equals(mat))
-                {
-                    return false; 
+                for (Entity entity : entities) {
+                    if(entity.getLocation().getBlockX() == x && entity.getLocation().getBlockZ() == z && entity.getLocation().getBlockY() == y + 1)
+                    {
+                        if(entity.getType() == EntityType.ITEM_FRAME)
+                        {
+                            ItemFrame frame = (ItemFrame) entity;
+                            if(!frame.getItem().getType().equals(mat))
+                            {
+                                return false; 
+                            }
+                            filtered = true; 
+                        }
+                        break;
+                    }
                 }
-                filtered = true; 
             }
 
             Chest chest = (Chest) toCheck.getState();
