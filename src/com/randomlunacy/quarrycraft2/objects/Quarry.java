@@ -15,14 +15,14 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.block.ShulkerBox;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import net.md_5.bungee.api.ChatColor;
 
 public class Quarry extends BukkitRunnable {
     Location centreChestLocation;
@@ -608,59 +608,22 @@ public class Quarry extends BukkitRunnable {
                 continue;
 
             // Check for chest at cz-1
-            if (world.getBlockAt(x, y, cz - 1).getType().equals(Material.CHEST)
-                    || world.getBlockAt(x, y, cz - 1).getType().equals(Material.TRAPPED_CHEST)) {
-                Chest chest = (Chest) world.getBlockAt(x, y, cz - 1).getState();
-                Inventory chestInv = chest.getInventory();
-                for (int i = 0; i < chestInv.getSize(); i++) {
-                    if (chestInv.getItem(i) != null && chestInv.getItem(i).getType().equals(mat)
-                            && chestInv.getItem(i).getAmount() < 64) {
-                        chestInv.getItem(i).setAmount(chestInv.getItem(i).getAmount() + 1);
-                        return true;
-                    }
-                    if (chestInv.getItem(i) == null || chestInv.getItem(i).getAmount() == 0) {
-                        chestInv.setItem(i, new ItemStack(mat));
-                        return true;
-                    }
-                }
+            if(checkChest(x, y, cz - 1, mat))
+            {
+                return true;
             }
 
             // Check for chest at cz+1
-            if (world.getBlockAt(x, y, cz + 1).getType().equals(Material.CHEST)
-                    || world.getBlockAt(x, y, cz + 1).getType().equals(Material.TRAPPED_CHEST)) {
-                Chest chest = (Chest) world.getBlockAt(x, y, cz + 1).getState();
-                Inventory chestInv = chest.getInventory();
-                for (int i = 0; i < chestInv.getSize(); i++) {
-                    if (chestInv.getItem(i) != null && chestInv.getItem(i).getType().equals(mat)
-                            && chestInv.getItem(i).getAmount() < 64) {
-                        chestInv.getItem(i).setAmount(chestInv.getItem(i).getAmount() + 1);
-                        return true;
-                    }
-                    if (chestInv.getItem(i) == null || chestInv.getItem(i).getAmount() == 0) {
-                        chestInv.setItem(i, new ItemStack(mat));
-                        return true;
-                    }
-                }
+            if(checkChest(x, y, cz + 1, mat))
+            {
+                return true;
             }
 
             // Check for chest at y+1
-            if (world.getBlockAt(x, y + 1, cz).getType().equals(Material.CHEST)
-                    || world.getBlockAt(x, y + 1, cz).getType().equals(Material.TRAPPED_CHEST)) {
-                Chest chest = (Chest) world.getBlockAt(x, y + 1, cz).getState();
-                Inventory chestInv = chest.getInventory();
-                for (int i = 0; i < chestInv.getSize(); i++) {
-                    if (chestInv.getItem(i) != null && chestInv.getItem(i).getType().equals(mat)
-                            && chestInv.getItem(i).getAmount() < 64) {
-                        chestInv.getItem(i).setAmount(chestInv.getItem(i).getAmount() + 1);
-                        return true;
-                    }
-                    if (chestInv.getItem(i) == null || chestInv.getItem(i).getAmount() == 0) {
-                        chestInv.setItem(i, new ItemStack(mat));
-                        return true;
-                    }
-                }
+            if(checkChest(x, y + 1 , cz, mat))
+            {
+                return true;
             }
-
         }
 
         // Do z = minZ to maxZ for x=cx
@@ -670,61 +633,74 @@ public class Quarry extends BukkitRunnable {
                 continue;
 
             // Check for chest at cx-1
-            if (world.getBlockAt(cx - 1, y, z).getType().equals(Material.CHEST)
-                    || world.getBlockAt(cx - 1, y, z).getType().equals(Material.TRAPPED_CHEST)) {
-                Chest chest = (Chest) world.getBlockAt(cx - 1, y, z).getState();
-                Inventory chestInv = chest.getInventory();
-                for (int i = 0; i < chestInv.getSize(); i++) {
-                    if (chestInv.getItem(i) != null && chestInv.getItem(i).getType().equals(mat)
-                            && chestInv.getItem(i).getAmount() < 64) {
-                        chestInv.getItem(i).setAmount(chestInv.getItem(i).getAmount() + 1);
-                        return true;
-                    }
-                    if (chestInv.getItem(i) == null || chestInv.getItem(i).getAmount() == 0) {
-                        chestInv.setItem(i, new ItemStack(mat));
-                        return true;
-                    }
-                }
+            if(checkChest(cx - 1, y, z, mat))
+            {
+                return true;
             }
 
             // Check for chest at cx+1
-            if (world.getBlockAt(cx + 1, y, z).getType().equals(Material.CHEST)
-                    || world.getBlockAt(cx + 1, y, z).getType().equals(Material.TRAPPED_CHEST)) {
-                Chest chest = (Chest) world.getBlockAt(cx + 1, y, z).getState();
-                Inventory chestInv = chest.getInventory();
-                for (int i = 0; i < chestInv.getSize(); i++) {
-                    if (chestInv.getItem(i) != null && chestInv.getItem(i).getType().equals(mat)
-                            && chestInv.getItem(i).getAmount() < 64) {
-                        chestInv.getItem(i).setAmount(chestInv.getItem(i).getAmount() + 1);
-                        return true;
-                    }
-                    if (chestInv.getItem(i) == null || chestInv.getItem(i).getAmount() == 0) {
-                        chestInv.setItem(i, new ItemStack(mat));
-                        return true;
-                    }
-                }
+            if(checkChest(cx + 1, y, z, mat))
+            {
+                return true;
             }
 
             // Check for chest at y+1
-            if (world.getBlockAt(cx, y + 1, z).getType().equals(Material.CHEST)
-                    || world.getBlockAt(cx, y + 1, z).getType().equals(Material.TRAPPED_CHEST)) {
-                Chest chest = (Chest) world.getBlockAt(cx, y + 1, z).getState();
-                Inventory chestInv = chest.getInventory();
-                for (int i = 0; i < chestInv.getSize(); i++) {
-                    if (chestInv.getItem(i) != null && chestInv.getItem(i).getType().equals(mat)
-                            && chestInv.getItem(i).getAmount() < 64) {
-                        chestInv.getItem(i).setAmount(chestInv.getItem(i).getAmount() + 1);
-                        return true;
-                    }
-                    if (chestInv.getItem(i) == null || chestInv.getItem(i).getAmount() == 0) {
-                        chestInv.setItem(i, new ItemStack(mat));
-                        return true;
-                    }
-                }
+            if(checkChest(cx, y + 1 , z, mat))
+            {
+                return true;
             }
-
         }
 
+        return false;
+    }
+
+    /**
+     * Check the chest and see if we can insert the item
+     * @param x coord of chest to check
+     * @param y coord of chest to check
+     * @param z coord of chest to check
+     * @param mat Material to attempt to insert
+     * @return true if insert succeeded, false otherwise
+     */
+    private boolean checkChest(int x, int y, int z, Material mat)
+    {
+
+        Block toCheck = world.getBlockAt(x, y, z);
+
+        if (toCheck.getType().equals(Material.CHEST) || toCheck.getType().equals(Material.TRAPPED_CHEST)) 
+        {
+            boolean filtered = false; 
+            //Look for frames for filtering - Start with UP as the only location to support
+            if(toCheck.getRelative(BlockFace.UP).getType().equals(Material.ITEM_FRAME))
+            {
+                ItemFrame frame = (ItemFrame) toCheck.getRelative(BlockFace.UP).getState();
+                if(frame.getAttachedFace().equals(BlockFace.DOWN) && !frame.getItem().getType().equals(mat))
+                {
+                    return false; 
+                }
+                filtered = true; 
+            }
+
+            Chest chest = (Chest) toCheck.getState();
+            Inventory chestInv = chest.getInventory();
+            for (int i = 0; i < chestInv.getSize(); i++) {
+                if (filtered && chestInv.getItem(i) != null && chestInv.getItem(i).getType().equals(Material.LAVA_BUCKET))
+                {
+                    //Void the item
+                    return true; 
+                }
+                if (chestInv.getItem(i) != null && chestInv.getItem(i).getType().equals(mat)
+                        && chestInv.getItem(i).getAmount() < 64) {
+                    chestInv.getItem(i).setAmount(chestInv.getItem(i).getAmount() + 1);
+                    return true;
+                }
+                if (chestInv.getItem(i) == null || chestInv.getItem(i).getAmount() == 0) {
+                    chestInv.setItem(i, new ItemStack(mat));
+                    return true;
+                }
+            
+            }
+        }
         return false;
     }
 
