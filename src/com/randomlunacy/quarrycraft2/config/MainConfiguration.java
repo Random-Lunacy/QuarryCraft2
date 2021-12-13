@@ -18,7 +18,7 @@ public class MainConfiguration extends Configuration {
     private boolean doWorldGuardProtection;
     private boolean doGriefPreventionProtection;
 
-    // TODO: Rework to be min/max y for quarry mining
+    // TODO: Verify that this gives adequate protection in WorldGuard and/or make configerable
     private int maxWGY = 100;
     private int minWGY = 20;
 

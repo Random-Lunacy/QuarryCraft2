@@ -139,21 +139,13 @@ public class Quarry extends BukkitRunnable {
                 && w.getBlockAt(cx + 1, cy, cz + 1).getType().equals(Material.REDSTONE_BLOCK);
     }
 
-    public void togglePause() {
-        togglePause(Bukkit.getPlayer(owner));
-    }
-
     public void togglePause(Player p) {
         paused = !paused;
 
         if (paused) {
             p.sendMessage(Messages.getQuarryPaused(centreChestLocation));
-            if (!isOwner(p))
-                tellOwner(Messages.getQuarryPaused(centreChestLocation));
         } else {
             p.sendMessage(Messages.getQuarryRestarted(centreChestLocation));
-            if (!isOwner(p))
-                tellOwner(Messages.getQuarryRestarted(centreChestLocation));
             alerted = false;
         }
     }
@@ -525,7 +517,7 @@ public class Quarry extends BukkitRunnable {
                         // Take part of the stack
                         int numToTake = (int) Math.ceil(energyToConsume / currentFuel.getEnergyValue());
                         centreInv.getItem(i).setAmount(centreInv.getItem(i).getAmount() - numToTake);
-                        tempStoredEnergy += ((float) numToTake) * currentFuel.getEnergyValue();
+                        tempStoredEnergy += (numToTake) * currentFuel.getEnergyValue();
 
                         tempStoredEnergy -= energyToConsume;
                         storedEnergy = tempStoredEnergy;
@@ -780,9 +772,9 @@ public class Quarry extends BukkitRunnable {
     }
 
     public boolean canInteractAt(Location l, Player p) {
-        if (p.hasPermission("quarrycraft.useall"))
+        if (p.hasPermission(QuarryCraft2.USE_ALL_QUARRIES_PERMISSION))
             return true;
-        if (isOwner(p) && p.hasPermission("quarrycraft.use")) {
+        if (isOwner(p) && p.hasPermission(QuarryCraft2.USE_QUARRIES_PERMISSION)) {
             return true;
         }
         if (l.getWorld().getName().equals(world.getName()) && l.getBlockX() >= minX - 1 && l.getBlockX() <= maxX + 1
@@ -792,7 +784,8 @@ public class Quarry extends BukkitRunnable {
     }
 
     public boolean canBreak(Location l, Player p) {
-        if ((isOwner(p) && p.hasPermission("quarrycraft.use")) || p.hasPermission("quarrycraft.useall")) {
+        if ((isOwner(p) && p.hasPermission(QuarryCraft2.USE_QUARRIES_PERMISSION))
+                || p.hasPermission(QuarryCraft2.USE_ALL_QUARRIES_PERMISSION)) {
             if (l.getWorld().getName().equals(world.getName()) && l.getBlockX() >= minX - 1 && l.getBlockX() <= maxX + 1
                     && l.getBlockZ() >= minZ - 1 && l.getBlockZ() <= maxZ + 1
                     && l.getBlockY() == centreChestLocation.getBlockY() - 1)
