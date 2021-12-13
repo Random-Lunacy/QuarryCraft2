@@ -956,6 +956,8 @@ public class Quarry extends BukkitRunnable {
                         alerted = true;
                         tellOwner(Messages.getNoSpace(centreChestLocation));
                     }
+                    resetPlatformCursor();
+                    platformDone = false;
                 }
             } else {
                 paused = true;
@@ -963,7 +965,9 @@ public class Quarry extends BukkitRunnable {
                     alerted = true;
                     tellOwner(Messages.getNoFuel(centreChestLocation));
                 }
-            }
+                resetPlatformCursor();
+                platformDone = false;
+        }
 
         }
 
@@ -1001,6 +1005,8 @@ public class Quarry extends BukkitRunnable {
                         alerted = true;
                         tellOwner(Messages.getNoSpace(centreChestLocation));
                     }
+                    resetPlatformCursor();
+                    platformDone = false;
                 }
             } else {
                 paused = true;
@@ -1008,7 +1014,9 @@ public class Quarry extends BukkitRunnable {
                     alerted = true;
                     tellOwner(Messages.getNoFuel(centreChestLocation));
                 }
-            }
+                resetPlatformCursor();
+                platformDone = false;
+        }
         }
 
     }
