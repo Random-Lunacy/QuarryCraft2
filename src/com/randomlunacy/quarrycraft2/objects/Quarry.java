@@ -298,7 +298,7 @@ public class Quarry extends BukkitRunnable {
                     || currentBlock.getType().equals(Material.PURPLE_STAINED_GLASS)
                     || currentBlock.getType().equals(Material.WHITE_STAINED_GLASS)) {
                 world.playSound(currentBlock.getLocation(), Sound.BLOCK_GLASS_BREAK, 1f, 1f);
-                currentBlock.setType(Material.AIR);
+                currentBlock.setType(Material.DIRT);
             }
             movePlatformBreaker();
         }
