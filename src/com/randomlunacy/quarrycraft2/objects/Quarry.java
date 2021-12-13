@@ -883,6 +883,25 @@ public class Quarry extends BukkitRunnable {
         return currentBlock;
     }
 
+    private void handleFluid(Material fluid, Block blockToMine)
+    {
+        Material thisMaterial = blockToMine.getType();
+        Material replacement = Material.GLASS;
+
+        if(thisMaterial.equals(fluid))
+        {
+            blockToMine.setType(replacement, false);
+            if(blockToMine.getRelative(BlockFace.NORTH).getType().equals(fluid))
+                blockToMine.getRelative(BlockFace.NORTH).setType(replacement, false);
+            if(blockToMine.getRelative(BlockFace.SOUTH).getType().equals(fluid))
+                blockToMine.getRelative(BlockFace.SOUTH).setType(replacement, false);
+            if(blockToMine.getRelative(BlockFace.EAST).getType().equals(fluid))
+                blockToMine.getRelative(BlockFace.EAST).setType(replacement, false);
+            if(blockToMine.getRelative(BlockFace.WEST).getType().equals(fluid))
+                blockToMine.getRelative(BlockFace.WEST).setType(replacement, false);
+        }
+    }
+
     public void mineNextBlock() {
         if (markedForDeletion)
             return;
@@ -890,9 +909,21 @@ public class Quarry extends BukkitRunnable {
 
         if (classicMode) {
             // Ignore air, water, lava, or bedrock
+            handleFluid(Material.WATER, blockToMine);
+            handleFluid(Material.LAVA, blockToMine);
+
             Material thisMaterial = blockToMine.getType();
             while (thisMaterial.equals(Material.AIR) || thisMaterial.equals(Material.WATER)
-                    || thisMaterial.equals(Material.LAVA) || thisMaterial.equals(Material.BEDROCK)) {
+                    || thisMaterial.equals(Material.LAVA) || thisMaterial.equals(Material.BEDROCK) 
+                    || thisMaterial.equals(Material.GLASS)) {
+                if(thisMaterial.equals(Material.WATER))
+                {
+                    blockToMine.setType(Material.GLASS, false);
+                }
+                if(thisMaterial.equals(Material.LAVA))
+                {
+                    blockToMine.setType(Material.GLASS, false);
+                }
                 moveMiningCursor();
                 blockToMine = findNextBlock();
                 thisMaterial = blockToMine.getType();
