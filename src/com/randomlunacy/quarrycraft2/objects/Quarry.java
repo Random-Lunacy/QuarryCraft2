@@ -916,13 +916,27 @@ public class Quarry extends BukkitRunnable {
             for (BlockFace blockFace : faces) {
                 Block checkBlock = blockToMine.getRelative(blockFace);
                 Location l = checkBlock.getLocation();
+                Material borderMaterial = Material.RED_STAINED_GLASS;
+                if(blockFace == BlockFace.NORTH)
+                {
+                    borderMaterial = Material.BLUE_STAINED_GLASS;
+                }
+                if(blockFace == BlockFace.EAST)
+                {
+                    borderMaterial = Material.PURPLE_STAINED_GLASS;
+                }
+                if(blockFace == BlockFace.WEST)
+                {
+                    borderMaterial = Material.GREEN_STAINED_GLASS;
+                }
+
                 if(!this.ptIntersects(l.getWorld(), l.getBlockX(), l.getBlockZ()) && checkBlock.getType().equals(fluid))
                 {
-                    checkBlock.setType(replacement,true);
+                    checkBlock.setType(borderMaterial,true);
                 }
                 if(checkBlock.getType().equals(fluid) && checkBlock.getBlockData() instanceof Levelled adjacentLevel && adjacentLevel.getLevel() == 0)
                 {
-                    checkBlock.setType(replacement,true);
+                    checkBlock.setType(borderMaterial,true);
                 }
             }
 
