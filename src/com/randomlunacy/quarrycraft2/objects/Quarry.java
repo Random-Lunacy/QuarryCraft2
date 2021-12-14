@@ -378,7 +378,7 @@ public class Quarry extends BukkitRunnable {
                             }
                             if(enchants.hasEnchant(Enchantment.LOOT_BONUS_BLOCKS))
                             {
-                               fortune = Math.max(fortune, enchants.getEnchantLevel(Enchantment.LOOT_BONUS_BLOCKS)) 
+                               fortune = Math.max(fortune, enchants.getEnchantLevel(Enchantment.LOOT_BONUS_BLOCKS));
                             }
                         }
                     }
