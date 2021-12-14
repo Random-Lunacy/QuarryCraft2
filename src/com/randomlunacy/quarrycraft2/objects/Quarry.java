@@ -314,7 +314,7 @@ public class Quarry extends BukkitRunnable {
 
     private boolean ptOutside(Location location)
     {
-        return !(location.getBlockX() >= minX - 1 && location.getBlockX() <= maxX + 1 && location.getBlockZ() >= minZ - 1 && location.getBlockZ() <= maxZ + 1);
+        return !(location.getBlockX() >= minX && location.getBlockX() <= maxX && location.getBlockZ() >= minZ && location.getBlockZ() <= maxZ);
     }
 
     public void clearPlatform() {
