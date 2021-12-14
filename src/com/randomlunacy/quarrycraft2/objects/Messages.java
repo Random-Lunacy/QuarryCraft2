@@ -68,8 +68,8 @@ public class Messages {
     private static final String STATUS_ENDER_REPLACE =
             "    Replacing blocks with dirt: " + ChatColor.GOLD + "%b" + ChatColor.RESET;
 
-    private static final String STATUS_SILK = "     Silk Touch: " + ChatColor.BOLD + "On" + ChatColor.RESET;
-    private static final String STATUS_FORTUNE = "  Fortune Level: " + ChatColor.BOLD + "%d" + ChatColor.RESET;
+    private static final String STATUS_SILK = "     Silk Touch: " + ChatColor.BLUE + "On" + ChatColor.RESET;
+    private static final String STATUS_FORTUNE = "  Fortune Level: " + ChatColor.BLUE + "%d" + ChatColor.RESET;
 
     public static String getMessagePrefix() {
         return MESSAGE_PREFIX;
