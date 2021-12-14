@@ -372,9 +372,8 @@ public class Quarry extends BukkitRunnable {
                     if (chestInv.getItem(i) != null && chestInv.getItem(i).getType().equals(Material.ENCHANTED_BOOK))
                     {
                         ItemMeta bookMeta = chestInv.getItem(i).getItemMeta();
-                        if(bookMeta instanceof EnchantmentStorageMeta)
+                        if(bookMeta instanceof EnchantmentStorageMeta enchants)
                         {
-                            EnchantmentStorageMeta enchants = (EnchantmentStorageMeta) bookMeta;
                             if(enchants.hasEnchant(Enchantment.SILK_TOUCH))
                             {
                                 silk = true;
