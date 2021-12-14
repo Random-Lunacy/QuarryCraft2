@@ -911,10 +911,8 @@ public class Quarry extends BukkitRunnable {
         Material replacement = Material.GLASS;
         Set<BlockFace> faces = Set.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
 
-        if((thisMaterial.equals(fluid) && blockToMine.getBlockData() instanceof Levelled )|| thisMaterial.equals(replacement))
+        if(thisMaterial.equals(fluid) && blockToMine.getBlockData() instanceof Levelled level)
         {
-            Levelled level = (Levelled) blockToMine.getBlockData();
-
             for (BlockFace blockFace : faces) {
                 Block checkBlock = blockToMine.getRelative(blockFace);
                 
