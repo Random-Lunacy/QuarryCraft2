@@ -6,11 +6,19 @@ import java.util.List;
 import java.util.Map;
 
 import com.randomlunacy.quarrycraft2.QuarryCraft2;
+import com.sk89q.worldedit.util.formatting.text.Component;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.ClickEvent.Action;
 
 public class GuideBook {
     private final Map<Player, Date> usedMap = new HashMap<>();
@@ -33,7 +41,58 @@ public class GuideBook {
             bookMeta.setTitle("QuarryCraft2 Guide");
             bookMeta.setAuthor("Nepokama & Mekle");
             bookMeta.setLore(List.of("A guide to building and using QuarryCraft2 quarries."));
-            bookMeta.addPage("Need to extract this data from the dispatchCommand");
+
+            //Magic retrieval of the underlying pages collection
+            List<BaseComponent> pages =  (List<BaseComponent>) BookMeta.class.getDeclaredField("pages").get(bookMeta);
+
+            //Title page (16 Total pages)
+            TextComponent text = new TextComponent(ChatColor.BOLD + "QuarryCraft2 Guide" + ChatColor.RESET + " \\n\\n\\n\\n\\n\\n\\n\\n\\n This plugin was coded by: ??????");
+            pages.add(text);
+
+            //Contents Page
+            text = new TextComponent(ChatColor.ITALIC + "" + ChatColor.BOLD + "" + ChatColor.UNDERLINE + "    Contents\\n" + ChatColor.RESET);
+            TextComponent contentLine1 = new TextComponent(new ComponentBuilder("Building the Quarry\\n").event(new ClickEvent(Action.CHANGE_PAGE, "3")).create());
+            TextComponent contentLine2 = new TextComponent(new ComponentBuilder("Fuel\\n").event(new ClickEvent(Action.CHANGE_PAGE, "7")).create());
+            TextComponent contentLine3 = new TextComponent(new ComponentBuilder("Fuel Efficiency\\n").event(new ClickEvent(Action.CHANGE_PAGE, "8")).create());
+            TextComponent contentLine4 = new TextComponent(new ComponentBuilder("Upgrades\\n").event(new ClickEvent(Action.CHANGE_PAGE, "9")).create());
+            TextComponent contentLine5 = new TextComponent(new ComponentBuilder("BlockFilters\\n").event(new ClickEvent(Action.CHANGE_PAGE, "12")).create());
+            TextComponent contentLine6 = new TextComponent(new ComponentBuilder("Mining Modes\\n").event(new ClickEvent(Action.CHANGE_PAGE, "13")).create());
+            TextComponent contentLine7 = new TextComponent(new ComponentBuilder("Pausing the quarry\\n").event(new ClickEvent(Action.CHANGE_PAGE, "14")).create());
+            TextComponent contentLine8 = new TextComponent(new ComponentBuilder("Viewing progress\\n").event(new ClickEvent(Action.CHANGE_PAGE, "14")).create());
+            pages.add(new TextComponent(text, contentLine1, contentLine2, contentLine3, contentLine4, contentLine5, contentLine6, contentLine7, contentLine8));
+
+            //Page 3
+            text = new TextComponent(ChatColor.BOLD + "" + ChatColor.UNDERLINE + "Building the Quarry" + ChatColor.RESET + "\\n");
+            text = new TextComponent(text, new TextComponent(ChatColor.BOLD + "Step 1." + ChatColor.RESET + "\\nPlace down a chest\\n"));
+            text = new TextComponent(text, new TextComponent(ChatColor.BOLD + "Step 2." + ChatColor.RESET + "\\nPlace a diamond block against each side of the chest. You will need 4 diamond blocks.\\n"));
+            pages.add(text);
+
+            //Page 4
+            text = new TextComponent(ChatColor.BOLD + "Step 3." + ChatColor.RESET + "\\nPlace a redstone block in each of the 4 corners\\n");
+            text = new TextComponent(text, new TextComponent(ChatColor.BOLD + "Step 4." + ChatColor.RESET + "\\nPlace iron bars running outwards from the diamond blocks. These will define your quarry's mining area. It is only necessary to run it from 2 sides.\\n"));
+            pages.add(text);
+
+            //Page 5
+            text = new TextComponent(ChatColor.BOLD + "Step 5." + ChatColor.RESET + "\\nPlace chests on either side of the iron bars, or on top of the iron bars for storage of mined items. They must touch the iron bars and be in the defined quarry area.\\n");
+            text = new TextComponent(text, new TextComponent(ChatColor.BOLD + "Step 6." + ChatColor.RESET + "\\nPlace fuel in the center chest. (Look on page 7 for details)\\n"));
+            pages.add(text);
+
+            //Page 6
+            text = new TextComponent(ChatColor.BOLD + "Step 7." + ChatColor.RESET + "\\nSneak-left-click the chest to create the quarry. It should now begin mining\\n");
+            pages.add(text);
+
+            //Page 7
+            text = new TextComponent(ChatColor.BOLD + "" + ChatColor.UNDERLINE + "Fuel" + ChatColor.RESET + "\\n");
+            text = new TextComponent(text, new TextComponent("Quarries will accept the following types of fuel:\\n"));
+            text = new TextComponent(text, new TextComponent("- Charcoal\\n"));
+            text = new TextComponent(text, new TextComponent("- Coal\\n"));
+            text = new TextComponent(text, new TextComponent("- Coal Blocks\\n"));
+            text = new TextComponent(text, new TextComponent("- Redstone\\n"));
+            text = new TextComponent(text, new TextComponent("- Redstone Blocks\\n"));
+            pages.add(text);
+            
+            //TODO: Add remaining Guidbook pages
+
             book.setItemMeta(bookMeta);
 
             p.getInventory().addItem(book);
