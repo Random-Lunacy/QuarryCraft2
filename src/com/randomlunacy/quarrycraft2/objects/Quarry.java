@@ -312,6 +312,11 @@ public class Quarry extends BukkitRunnable {
         return w.getName().equals(world.getName()) && x >= minX - 1 && x <= maxX + 1 && z >= minZ - 1 && z <= maxZ + 1;
     }
 
+    private boolean ptOutside(Location location)
+    {
+        return location.getBlockX() < minX && location.getBlockX() > maxX + 1 && location.getBlockZ() < minZ && location.getBlockZ() > maxZ + 1;
+    }
+
     public void clearPlatform() {
         for (int i = 0; i < maxX - minX + 1; i++) {
             Block currentBlock = world.getBlockAt(platX, centreChestLocation.getBlockY() - 1, platZ);
@@ -907,43 +912,41 @@ public class Quarry extends BukkitRunnable {
 
     private void handleFluid(Material fluid, Block blockToMine)
     {
-        Material thisMaterial = blockToMine.getType();
         Material replacement = Material.GLASS;
         Set<BlockFace> faces = Set.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
 
-        if(thisMaterial.equals(fluid) && blockToMine.getBlockData() instanceof Levelled level)
-        {
-            for (BlockFace blockFace : faces) {
-                Block checkBlock = blockToMine.getRelative(blockFace);
-                Location l = checkBlock.getLocation();
-                Material borderMaterial = Material.RED_STAINED_GLASS;
-                if(blockFace == BlockFace.NORTH)
-                {
-                    borderMaterial = Material.BLUE_STAINED_GLASS;
-                }
-                if(blockFace == BlockFace.EAST)
-                {
-                    borderMaterial = Material.PURPLE_STAINED_GLASS;
-                }
-                if(blockFace == BlockFace.WEST)
-                {
-                    borderMaterial = Material.GREEN_STAINED_GLASS;
-                }
-
-                if(!this.ptIntersects(l.getWorld(), l.getBlockX(), l.getBlockZ()) && checkBlock.getType().equals(fluid))
-                {
-                    checkBlock.setType(borderMaterial,true);
-                }
-                if(checkBlock.getType().equals(fluid) && checkBlock.getBlockData() instanceof Levelled adjacentLevel && adjacentLevel.getLevel() == 0)
-                {
-                    checkBlock.setType(borderMaterial,true);
-                }
-            }
-
-            if(level.getLevel() == 0)
+        for (BlockFace blockFace : faces) {
+            Block checkBlock = blockToMine.getRelative(blockFace);
+            Material borderMaterial = Material.RED_STAINED_GLASS;
+            if(blockFace == BlockFace.NORTH)
             {
-                blockToMine.setType(replacement, false);
+                borderMaterial = Material.BLUE_STAINED_GLASS;
             }
+            if(blockFace == BlockFace.EAST)
+            {
+                borderMaterial = Material.PURPLE_STAINED_GLASS;
+            }
+            if(blockFace == BlockFace.WEST)
+            {
+                borderMaterial = Material.GREEN_STAINED_GLASS;
+            }
+
+            if(ptOutside(checkBlock.getLocation()) && checkBlock.getType().equals(fluid))
+            {
+                checkBlock.setType(borderMaterial,true);
+            }
+            /*
+            if(checkBlock.getType().equals(fluid) && checkBlock.getBlockData() instanceof Levelled adjacentLevel && adjacentLevel.getLevel() == 0)
+            {
+                checkBlock.setType(borderMaterial,true);
+            }
+            */
+        }
+        
+        Material thisMaterial = blockToMine.getType();
+        if(thisMaterial.equals(fluid) && blockToMine.getBlockData() instanceof Levelled level && level.getLevel() == 0)
+        {
+            blockToMine.setType(replacement, false);
         }
     }
 
@@ -958,6 +961,10 @@ public class Quarry extends BukkitRunnable {
             handleFluid(Material.LAVA, blockToMine);
             //Make sure the current block is air if liquid handling converted it. 
             if(blockToMine.getType().equals(Material.GLASS)) blockToMine.setType(Material.AIR); 
+            if(blockToMine.getType().equals(Material.BLUE_STAINED_GLASS)) blockToMine.setType(Material.AIR); 
+            if(blockToMine.getType().equals(Material.RED_STAINED_GLASS)) blockToMine.setType(Material.AIR); 
+            if(blockToMine.getType().equals(Material.GREEN_STAINED_GLASS)) blockToMine.setType(Material.AIR); 
+            if(blockToMine.getType().equals(Material.PURPLE_STAINED_GLASS)) blockToMine.setType(Material.AIR); 
 
             Material thisMaterial = blockToMine.getType();
             while (thisMaterial.equals(Material.AIR) || thisMaterial.equals(Material.WATER)
