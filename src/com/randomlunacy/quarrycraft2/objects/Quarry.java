@@ -15,7 +15,6 @@ import com.randomlunacy.quarrycraft2.handlers.WorldGuardHandler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
-import org.bukkit.Fluid;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -25,7 +24,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.block.ShulkerBox;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Levelled;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -911,25 +909,21 @@ public class Quarry extends BukkitRunnable {
     {
         Material thisMaterial = blockToMine.getType();
         Material replacement = Material.GLASS;
+        Set<BlockFace> faces = Set.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
 
         if((thisMaterial.equals(fluid) && blockToMine.getBlockData() instanceof Levelled )|| thisMaterial.equals(replacement))
         {
-            Set<BlockFace> faces = Set.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
+            Levelled level = (Levelled) blockToMine.getBlockData();
 
             for (BlockFace blockFace : faces) {
                 Block checkBlock = blockToMine.getRelative(blockFace);
                 
-                if(checkBlock.getType().equals(fluid) && checkBlock.getBlockData() instanceof Levelled)
+                if(checkBlock.getType().equals(fluid) && checkBlock.getBlockData() instanceof Levelled adjacentLevel && adjacentLevel.getLevel() == 0)
                 {
-                    Levelled level = (Levelled) checkBlock.getBlockData();
-                    if(level.getLevel() == 0)
-                    {
-                        checkBlock.setType(replacement,true);
-                    }
+                    checkBlock.setType(replacement,true);
                 }
             }
 
-            Levelled level = (Levelled) blockToMine.getBlockData();
             if(level.getLevel() == 0)
             {
                 blockToMine.setType(replacement, false);
