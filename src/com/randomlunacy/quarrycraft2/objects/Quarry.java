@@ -15,6 +15,7 @@ import com.randomlunacy.quarrycraft2.handlers.WorldGuardHandler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Fluid;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -24,6 +25,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.block.ShulkerBox;
+import org.bukkit.block.data.Levelled;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -906,16 +908,24 @@ public class Quarry extends BukkitRunnable {
 
         if(thisMaterial.equals(fluid) || thisMaterial.equals(replacement))
         {
-            blockToMine.setType(replacement, false);
-
             Set<BlockFace> faces = Set.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
 
             for (BlockFace blockFace : faces) {
                 Block checkBlock = blockToMine.getRelative(blockFace);
                 if(checkBlock.getType().equals(fluid))
                 {
-                    checkBlock.setType(replacement,true);
+                    Levelled level = (Levelled) checkBlock.getState();
+                    if(level.getLevel() == 0)
+                    {
+                        checkBlock.setType(replacement,true);
+                    }
                 }
+            }
+
+            Levelled level = (Levelled) blockToMine.getState();
+            if(level.getLevel() == 0)
+            {
+                blockToMine.setType(replacement, false);
             }
         }
     }
