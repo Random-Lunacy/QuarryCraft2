@@ -906,13 +906,13 @@ public class Quarry extends BukkitRunnable {
         Material thisMaterial = blockToMine.getType();
         Material replacement = Material.GLASS;
 
-        if(thisMaterial.equals(fluid) || thisMaterial.equals(replacement))
+        if((thisMaterial.equals(fluid) && blockToMine.getState() instanceof Levelled )|| thisMaterial.equals(replacement))
         {
             Set<BlockFace> faces = Set.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
 
             for (BlockFace blockFace : faces) {
                 Block checkBlock = blockToMine.getRelative(blockFace);
-                if(checkBlock.getType().equals(fluid))
+                if(checkBlock.getType().equals(fluid) && checkBlock.getState() instanceof Levelled)
                 {
                     Levelled level = (Levelled) checkBlock.getState();
                     if(level.getLevel() == 0)
