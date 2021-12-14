@@ -920,13 +920,13 @@ public class Quarry extends BukkitRunnable {
                 {
                     checkBlock.setType(replacement,true);
                 }
-                if(checkBlock.getType().equals(fluid) && checkBlock.getBlockData() instanceof Levelled adjacentLevel && adjacentLevel.getLevel() <= 1)
+                if(checkBlock.getType().equals(fluid) && checkBlock.getBlockData() instanceof Levelled adjacentLevel && adjacentLevel.getLevel() == 0)
                 {
                     checkBlock.setType(replacement,true);
                 }
             }
 
-            if(level.getLevel() <= 1)
+            if(level.getLevel() == 0)
             {
                 blockToMine.setType(replacement, false);
             }
