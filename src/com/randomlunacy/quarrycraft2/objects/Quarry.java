@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import com.randomlunacy.quarrycraft2.QuarryCraft2;
 import com.randomlunacy.quarrycraft2.handlers.GriefPreventionHandler;
@@ -903,17 +904,19 @@ public class Quarry extends BukkitRunnable {
         Material thisMaterial = blockToMine.getType();
         Material replacement = Material.GLASS;
 
-        if(thisMaterial.equals(fluid))
+        if(thisMaterial.equals(fluid) || thisMaterial.equals(replacement))
         {
             blockToMine.setType(replacement, false);
-            if(blockToMine.getRelative(BlockFace.NORTH).getType().equals(fluid))
-                blockToMine.getRelative(BlockFace.NORTH).setType(replacement, false);
-            if(blockToMine.getRelative(BlockFace.SOUTH).getType().equals(fluid))
-                blockToMine.getRelative(BlockFace.SOUTH).setType(replacement, false);
-            if(blockToMine.getRelative(BlockFace.EAST).getType().equals(fluid))
-                blockToMine.getRelative(BlockFace.EAST).setType(replacement, false);
-            if(blockToMine.getRelative(BlockFace.WEST).getType().equals(fluid))
-                blockToMine.getRelative(BlockFace.WEST).setType(replacement, false);
+
+            Set<BlockFace> faces = Set.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
+
+            for (BlockFace blockFace : faces) {
+                Block checkBlock = blockToMine.getRelative(blockFace);
+                if(checkBlock.getType().equals(fluid))
+                {
+                    checkBlock.setType(replacement,true);
+                }
+            }
         }
     }
 
