@@ -361,7 +361,7 @@ public class Quarry extends BukkitRunnable {
                         goldBlockCount += chestInv.getItem(i).getAmount();
                     if (chestInv.getItem(i) != null && chestInv.getItem(i).getType().equals(Material.NETHER_STAR))
                         hasNetherStar = true;
-                    if (chestInv.getItem(i) != null && chestInv.getItem(i).getType().equals(Material.BOOK))
+                    if (chestInv.getItem(i) != null && chestInv.getItem(i).getType().equals(Material.ENCHANTED_BOOK))
                     {
                         ItemMeta bookMeta = chestInv.getItem(i).getItemMeta();
                         if (bookMeta.getEnchants().containsKey(Enchantment.SILK_TOUCH))
