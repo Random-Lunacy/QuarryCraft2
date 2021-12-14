@@ -33,6 +33,7 @@ import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -367,13 +368,17 @@ public class Quarry extends BukkitRunnable {
                     if (chestInv.getItem(i) != null && chestInv.getItem(i).getType().equals(Material.ENCHANTED_BOOK))
                     {
                         ItemMeta bookMeta = chestInv.getItem(i).getItemMeta();
-                        if (bookMeta.getEnchants().containsKey(Enchantment.SILK_TOUCH))
+                        if(bookMeta instanceof EnchantmentStorageMeta)
                         {
-                            silk = true;
-                        }
-                        if (bookMeta.getEnchants().containsKey(Enchantment.LOOT_BONUS_BLOCKS))
-                        {
-                            fortune = Math.max(fortune, bookMeta.getEnchantLevel(Enchantment.LOOT_BONUS_BLOCKS));
+                            EnchantmentStorageMeta enchants = (EnchantmentStorageMeta) bookMeta;
+                            if(enchants.hasEnchant(Enchantment.SILK_TOUCH))
+                            {
+                                silk = true;
+                            }
+                            if(enchants.hasEnchant(Enchantment.LOOT_BONUS_BLOCKS))
+                            {
+                               fortune = Math.max(fortune, enchants.getEnchantLevel(Enchantment.LOOT_BONUS_BLOCKS)) 
+                            }
                         }
                     }
                 }
