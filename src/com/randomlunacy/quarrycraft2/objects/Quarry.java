@@ -717,33 +717,30 @@ public class Quarry extends BukkitRunnable {
 
             Chest chest = (Chest) toCheck.getState();
             Inventory chestInv = chest.getInventory();
-            while(items.getAmount() > 0)
-            {
-                for (int i = 0; i < chestInv.getSize(); i++) {
-                    if (filtered && chestInv.getItem(i) != null && chestInv.getItem(i).getType().equals(Material.LAVA_BUCKET))
-                    {
-                        //Void the item
-                        return 0; 
-                    }
-                    if (chestInv.getItem(i) != null && chestInv.getItem(i).getType().equals(items.getType())
-                            && chestInv.getItem(i).getAmount() < chestInv.getItem(i).getType().getMaxStackSize()) 
-                        {
-                        int space = items.getType().getMaxStackSize() - chestInv.getItem(i).getAmount();
-                        if (space >= items.getAmount())
-                        {
-                            chestInv.getItem(i).setAmount(chestInv.getItem(i).getAmount() + items.getAmount());    
-                            items.setAmount(0);
-                        } else {
-                            chestInv.getItem(i).setAmount(chestInv.getItem(i).getAmount() + space);
-                            items.setAmount(items.getAmount() - space);
-                        }
-                    }
-                    if (chestInv.getItem(i) == null || chestInv.getItem(i).getAmount() == 0) {
-                        chestInv.setItem(i, items.clone());
-                        items.setAmount(0);
-                    }
-                
+            for (int i = 0; i < chestInv.getSize(); i++) {
+                if (filtered && chestInv.getItem(i) != null && chestInv.getItem(i).getType().equals(Material.LAVA_BUCKET))
+                {
+                    //Void the item
+                    return 0; 
                 }
+                if (chestInv.getItem(i) != null && chestInv.getItem(i).getType().equals(items.getType())
+                        && chestInv.getItem(i).getAmount() < chestInv.getItem(i).getType().getMaxStackSize()) 
+                    {
+                    int space = items.getType().getMaxStackSize() - chestInv.getItem(i).getAmount();
+                    if (space >= items.getAmount())
+                    {
+                        chestInv.getItem(i).setAmount(chestInv.getItem(i).getAmount() + items.getAmount());    
+                        items.setAmount(0);
+                    } else {
+                        chestInv.getItem(i).setAmount(chestInv.getItem(i).getAmount() + space);
+                        items.setAmount(items.getAmount() - space);
+                    }
+                }
+                if (chestInv.getItem(i) == null || chestInv.getItem(i).getAmount() == 0) {
+                    chestInv.setItem(i, items.clone());
+                    items.setAmount(0);
+                }
+            
             }
             return items.getAmount();
         }
