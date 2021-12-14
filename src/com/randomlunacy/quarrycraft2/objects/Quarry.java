@@ -437,6 +437,7 @@ public class Quarry extends BukkitRunnable {
             if (!classicMode) {
                 msgs.add(Messages.getStatusEnderReplace(enderReplaceDirt));
             }
+            msgs.add(String.format("Calculated world bottom: %d", world.getMinHeight()));
             tellOwner(msgs.toArray(new String[msgs.size()]));
 
         }
@@ -943,29 +944,32 @@ public class Quarry extends BukkitRunnable {
         Block blockToMine = findNextBlock();
 
         if (classicMode) {
-            // Ignore air, water, lava, or bedrock
             handleFluid(Material.WATER, blockToMine);
             handleFluid(Material.LAVA, blockToMine);
-            //Make sure the current block is air if liquid handling converted it.
-            Material blockToMineMaterial = blockToMine.getType(); 
-            if(blockToMineMaterial.equals(Material.GLASS)) blockToMine.setType(Material.AIR); 
-
+            // Ignore air, water, lava, or bedrock
+            blockToMine = findNextBlock(); //Re-get the block in case of fluid handling
             Material thisMaterial = blockToMine.getType();
             while (thisMaterial.equals(Material.AIR) || thisMaterial.equals(Material.WATER)
-                    || thisMaterial.equals(Material.LAVA) || thisMaterial.equals(Material.BEDROCK)) {
+                    || thisMaterial.equals(Material.LAVA) || thisMaterial.equals(Material.BEDROCK)) 
+            {
                 moveMiningCursor();
                 blockToMine = findNextBlock();
+
                 handleFluid(Material.WATER, blockToMine);
                 handleFluid(Material.LAVA, blockToMine);
+                blockToMine = findNextBlock(); //Re-get the block in case of fluid handling
                 
                 //Make sure the current block is air if liquid handling converted it. 
-                blockToMineMaterial = blockToMine.getType(); 
-                if(blockToMineMaterial.equals(Material.GLASS)) blockToMine.setType(Material.AIR); 
+                if(blockToMine.getType().equals(Material.GLASS)) blockToMine.setType(Material.AIR); 
                     
                 thisMaterial = blockToMine.getType();
                 if (nextX == maxX && nextY == worldBottom && nextZ == maxZ)
                     break;
             }
+
+            //Make sure the current block is air if liquid handling converted it.
+            if(blockToMine.getType().equals(Material.GLASS)) blockToMine.setType(Material.AIR); 
+            
             if (thisMaterial.equals(Material.AIR) || thisMaterial.equals(Material.WATER) || thisMaterial.equals(Material.LAVA)
                     || thisMaterial.equals(Material.BEDROCK)) {
                 if (nextX == maxX && nextY == worldBottom && nextZ == maxZ && !alerted) {
