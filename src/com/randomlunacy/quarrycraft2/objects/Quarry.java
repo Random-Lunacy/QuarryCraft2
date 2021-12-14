@@ -969,6 +969,10 @@ public class Quarry extends BukkitRunnable {
                 
                 //Make sure the current block is air if liquid handling converted it. 
                 if(blockToMine.getType().equals(Material.GLASS)) blockToMine.setType(Material.AIR); 
+                if(blockToMine.getType().equals(Material.BLUE_STAINED_GLASS)) blockToMine.setType(Material.AIR); 
+                if(blockToMine.getType().equals(Material.RED_STAINED_GLASS)) blockToMine.setType(Material.AIR); 
+                if(blockToMine.getType().equals(Material.GREEN_STAINED_GLASS)) blockToMine.setType(Material.AIR); 
+                if(blockToMine.getType().equals(Material.PURPLE_STAINED_GLASS)) blockToMine.setType(Material.AIR); 
                 
                 thisMaterial = blockToMine.getType();
                 if (nextX == maxX && nextY == worldBottom && nextZ == maxZ)
