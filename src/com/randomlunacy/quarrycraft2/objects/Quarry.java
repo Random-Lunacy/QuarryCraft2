@@ -25,6 +25,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.block.ShulkerBox;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Levelled;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -911,15 +912,16 @@ public class Quarry extends BukkitRunnable {
         Material thisMaterial = blockToMine.getType();
         Material replacement = Material.GLASS;
 
-        if((thisMaterial.equals(fluid) && blockToMine.getState() instanceof Levelled )|| thisMaterial.equals(replacement))
+        if((thisMaterial.equals(fluid) && blockToMine.getBlockData() instanceof Levelled )|| thisMaterial.equals(replacement))
         {
             Set<BlockFace> faces = Set.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
 
             for (BlockFace blockFace : faces) {
                 Block checkBlock = blockToMine.getRelative(blockFace);
-                if(checkBlock.getType().equals(fluid) && checkBlock.getState() instanceof Levelled)
+                
+                if(checkBlock.getType().equals(fluid) && checkBlock.getBlockData() instanceof Levelled)
                 {
-                    Levelled level = (Levelled) checkBlock.getState();
+                    Levelled level = (Levelled) checkBlock.getBlockData();
                     if(level.getLevel() == 0)
                     {
                         checkBlock.setType(replacement,true);
@@ -927,7 +929,7 @@ public class Quarry extends BukkitRunnable {
                 }
             }
 
-            Levelled level = (Levelled) blockToMine.getState();
+            Levelled level = (Levelled) blockToMine.getBlockData();
             if(level.getLevel() == 0)
             {
                 blockToMine.setType(replacement, false);
