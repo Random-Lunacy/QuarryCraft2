@@ -122,6 +122,8 @@ public class Quarry extends BukkitRunnable {
         platZ = minZ - 1;
         paused = false;
         finished = false;
+
+        worldBottom = world.getMinHeight();
     }
 
     public Quarry(Chest centreChest, int minX, int maxX, int minZ, int maxZ, boolean mode, String owner) {
@@ -451,7 +453,6 @@ public class Quarry extends BukkitRunnable {
             if (!classicMode) {
                 msgs.add(Messages.getStatusEnderReplace(enderReplaceDirt));
             }
-            msgs.add(String.format("Calculated world bottom: %d", world.getMinHeight()));
             tellOwner(msgs.toArray(new String[msgs.size()]));
 
         }
