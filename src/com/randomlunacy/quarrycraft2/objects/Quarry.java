@@ -418,6 +418,7 @@ public class Quarry extends BukkitRunnable {
             enderReplaceDirt = hasNetherStar;
             silkTouch = silk;
             fortuneLevel = fortune;
+            craftStorageBlock = crafting;
 
             energyMod = (101.0f - (float) goldBlocks) / 101.0f;
             float efficiency = 100.0f * ((float) goldBlocks) / 101.0f;
