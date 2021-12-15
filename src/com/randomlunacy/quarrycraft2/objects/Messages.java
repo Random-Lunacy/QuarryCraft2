@@ -70,6 +70,7 @@ public class Messages {
 
     private static final String STATUS_SILK = "    Silk Touch: " + ChatColor.BLUE + "On" + ChatColor.RESET;
     private static final String STATUS_FORTUNE = "    Fortune Level: " + ChatColor.BLUE + "%d" + ChatColor.RESET;
+    private static final String STATUS_CRAFTING = "    Crafting Storage Blocks: " + ChatColor.BLUE + "On" + ChatColor.RESET;
 
     public static String getMessagePrefix() {
         return MESSAGE_PREFIX;
@@ -161,6 +162,11 @@ public class Messages {
 
     public static String getStatusSilkTouch(boolean silking) {
         return String.format(STATUS_SILK, silking);
+    }
+
+    public static String getStatusCraftingStorageBlocks(boolean crafting)
+    {
+        return String.format(STATUS_CRAFTING, crafting)
     }
 
     public static String getStatusFortune(int fortuneLevel) {
