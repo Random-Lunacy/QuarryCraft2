@@ -1002,7 +1002,11 @@ public class Quarry extends BukkitRunnable {
 
             if(ptOutside(checkBlock.getLocation()) && checkBlock.getType().equals(fluid))
             {
-                checkBlock.setType(borderMaterial,true);
+                checkBlock.setType(borderMaterial);
+            } else if (checkBlock.getX() < blockToMine.getX() && checkBlock.getType().equals(fluid) &&  checkBlock.getBlockData() instanceof Levelled level && level.getLevel() == 0) 
+            {
+                //It's possible due to water shapes that we create a source block behind us, which will refill source blocks as we move forward
+                blockToMine.setType(Material.AIR);
             }
         }
         
