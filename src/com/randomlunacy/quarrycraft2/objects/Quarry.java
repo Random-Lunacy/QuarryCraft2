@@ -9,7 +9,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import com.randomlunacy.quarrycraft2.QuarryCraft2;
 import com.randomlunacy.quarrycraft2.handlers.GriefPreventionHandler;
@@ -79,6 +81,7 @@ public class Quarry extends BukkitRunnable {
 
     HashMap<Chunk, Boolean> chunks = new HashMap<>();
     EnumMap<Material, ItemStack> compressionMap = new EnumMap<>(Material.class);
+    Queue<ItemStack> toGoInChests = new ArrayBlockingQueue<>(30);
 
     // TODO: Make this configureable
     static Material[] ignored =
@@ -650,7 +653,6 @@ public class Quarry extends BukkitRunnable {
         int cz = centreChestLocation.getBlockZ();
         int y = centreChestLocation.getBlockY();
 
-        ItemStack item;
 
         ItemStack tool = new ItemStack(Material.DIAMOND_PICKAXE);
         if (silkTouch) {
@@ -660,45 +662,54 @@ public class Quarry extends BukkitRunnable {
                 tool.addEnchantment(Enchantment.LOOT_BONUS_BLOCKS, fortuneLevel);
             }
         }
-        Optional<ItemStack> drops = blockToMine.getDrops(tool).stream().findFirst(); 
-        if(drops.isPresent())
+
+        for(ItemStack item: blockToMine.getDrops(tool))
         {
-            item = drops.get();
-        } else {
-            //This means no drops, so nothing to do. 
-            return true; 
+            toGoInChests.add(item);
         }
 
+        boolean placedItem = true;
+        while(!toGoInChests.isEmpty() && placedItem)
+        {
+            ItemStack item = toGoInChests.remove();
+            ItemStack initialItem = item; // Need a copy to compare with at the end. 
+            // Do x = minX to maxX for z=cz
+            for (int x = minX; x <= maxX; x++) {
+                // Check for an iron bar
+                if (world.getBlockAt(x, y, cz).getType().equals(Material.IRON_BARS))
+                {
+                    // Check for chests around bars
+                    item = checkChest(x, y, cz - 1, item);
+                    item = checkChest(x, y, cz + 1, item);
+                    item = checkChest(x, y + 1, cz, item);
+                }
+            }
 
-        // Do x = minX to maxX for z=cz
-        for (int x = minX; x <= maxX; x++) {
-            // Check for an iron bar
-            if (!world.getBlockAt(x, y, cz).getType().equals(Material.IRON_BARS))
-                continue;
+            if(item == null || item.getAmount() == 0) 
+            {
+                continue; 
+            }
 
-            // Check for chests around bars
-            item = checkChest(x, y, cz - 1, item);
-            item = checkChest(x, y, cz + 1, item);
-            item = checkChest(x, y + 1, cz, item);
+            // Do z = minZ to maxZ for x=cx
+            for (int z = minZ; z <= maxZ; z++) {
+                // Check for an iron bar
+                if (world.getBlockAt(cx, y, z).getType().equals(Material.IRON_BARS))
+                {
+                    // Check for chests around bars
+                    item = checkChest(cx - 1, y, z, item);
+                    item = checkChest(cx + 1, y, z, item);
+                    item = checkChest(cx, y + 1 , z, item);
+                }
+            }
 
-            if(item == null || item.getAmount() == 0) return true; 
+            if(item != null && item.getAmount() != 0) 
+            {
+                if (item.equals(initialItem))
+                    placedItem = false;
+                toGoInChests.add(item);
+            } 
         }
-
-        // Do z = minZ to maxZ for x=cx
-        for (int z = minZ; z <= maxZ; z++) {
-            // Check for an iron bar
-            if (!world.getBlockAt(cx, y, z).getType().equals(Material.IRON_BARS))
-                continue;
-
-            // Check for chests around bars
-            item = checkChest(cx - 1, y, z, item);
-            item = checkChest(cx + 1, y, z, item);
-            item = checkChest(cx, y + 1 , z, item);
-
-            if(item == null || item.getAmount() == 0) return true; 
-        }
-
-        return false;
+        return toGoInChests.isEmpty();
     }
 
     private ItemStack getCompressedStorage(ItemStack item)
@@ -748,6 +759,7 @@ public class Quarry extends BukkitRunnable {
 
         if (toCheck.getType().equals(Material.CHEST) || toCheck.getType().equals(Material.TRAPPED_CHEST)) 
         {
+            ItemStack storageBlock = getCompressedStorage(items);
             boolean filtered = false; 
             //Look for frames for filtering - Start with UP as the only location to support
             Collection<Entity> entities = world.getNearbyEntities(toCheck.getRelative(BlockFace.UP).getLocation(), 1, 1, 1);
@@ -759,7 +771,7 @@ public class Quarry extends BukkitRunnable {
                         if(entity.getType() == EntityType.ITEM_FRAME)
                         {
                             ItemFrame frame = (ItemFrame) entity;
-                            if(!frame.getItem().getType().equals(items.getType()))
+                            if(!frame.getItem().getType().equals(items.getType()) && !frame.getItem().getType().equals(storageBlock.getType()))
                             {
                                 return items; 
                             }
@@ -772,7 +784,6 @@ public class Quarry extends BukkitRunnable {
 
             Chest chest = (Chest) toCheck.getState();
             Inventory chestInv = chest.getInventory();
-            ItemStack storageBlock = getCompressedStorage(items);
             for (int i = 0; i < chestInv.getSize(); i++) {
                 if (filtered && chestInv.getItem(i) != null && chestInv.getItem(i).getType().equals(Material.LAVA_BUCKET))
                 {
@@ -782,24 +793,27 @@ public class Quarry extends BukkitRunnable {
                 if (chestInv.getItem(i) != null && chestInv.getItem(i).getType().equals(items.getType())
                         && chestInv.getItem(i).getAmount() < chestInv.getItem(i).getType().getMaxStackSize()) 
                 {
+
+                    //Craft the storage blocks, reducing the items in chest if necessary.
+                    //Put the Storage block on the item queue, so that it will stack in an earlier slot/chest if necessary. 
                     if(craftStorageBlock && !storageBlock.getType().isAir() && chestInv.getItem(i).getAmount() + items.getAmount() >= 9)
                     {
                         if(items.getAmount() < 9)
                         {
                             if(chestInv.getItem(i).getAmount() + items.getAmount() == 9)
                             {
-                                chestInv.setItem(i, storageBlock.clone());
+                                chestInv.setItem(i, null);
+                                toGoInChests.add(storageBlock.clone());
                                 return null;
                             } 
                             chestInv.getItem(i).setAmount(chestInv.getItem(i).getAmount() + items.getAmount() - 9);
-                            items = storageBlock.clone();
+                            toGoInChests.add(storageBlock.clone());
                             continue;
                         } else {
-                            // This case is hard, as it's two items to place when we're setup for one. 
-                            // In the real world, we will see this for: Raw Copper, Gold Nuggets (Nether Gold), and Lapis Lazuli
-                            // Later blocks may drop below the 9 threshold, and thus clean it up. 
-                            // The only Ore with an Average drop above 9 is Lapis @ Fortune III
-                            // One option would be a queue of items to put in the chests that we could push results onto. 
+                            items.setAmount(items.getAmount()-9);
+                            toGoInChests.add(items);
+                            toGoInChests.add(storageBlock.clone());
+                            return null;
                         }
                     }
 
@@ -1057,6 +1071,15 @@ public class Quarry extends BukkitRunnable {
                         tellOwner(Messages.getQuarryRestarted(centreChestLocation));
                     }
                 } else {
+                    consumeFuel(energyToUse);
+                    if (thisMaterial.equals(Material.DIRT) || thisMaterial.equals(Material.GRASS)
+                            || thisMaterial.equals(Material.GRASS_BLOCK))
+                        world.playSound(blockToMine.getLocation(), Sound.BLOCK_GRASS_BREAK, 1.0f, 1.0f);
+                    else if (thisMaterial.equals(Material.GRAVEL))
+                        world.playSound(blockToMine.getLocation(), Sound.BLOCK_GRAVEL_BREAK, 1.0f, 1.0f);
+                    else world.playSound(blockToMine.getLocation(), Sound.BLOCK_STONE_BREAK, 1.0f, 1.0f);
+                    blockToMine.setType(Material.AIR);
+
                     paused = true;
                     if (!alerted) {
                         alerted = true;
@@ -1101,11 +1124,18 @@ public class Quarry extends BukkitRunnable {
                     if (enderReplaceDirt && !blockToMine.isPassable())
                         blockToMine.setType(Material.DIRT);
                     else blockToMine.setType(Material.AIR);
+
                     if (alerted) {
                         alerted = false;
                         tellOwner(Messages.getQuarryRestarted(centreChestLocation));
                     }
                 } else {
+                    consumeFuel(energyToUse);
+                    world.playSound(blockToMine.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
+                    if (enderReplaceDirt && !blockToMine.isPassable())
+                        blockToMine.setType(Material.DIRT);
+                    else blockToMine.setType(Material.AIR);
+
                     paused = true;
                     if (!alerted) {
                         alerted = true;
