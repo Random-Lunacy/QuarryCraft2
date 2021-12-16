@@ -1,0 +1,109 @@
+This is a retyping of the contents of the original QuarryCraft
+
+-- Title Page
+QuarryCraft Guide
+
+
+This plugin was coded by: xxxx
+
+-- Content page
+       Contents
+3. Building the Quarry
+7. Fuel
+8. Fuel Efficiency
+9. Upgrades
+12. Block Filters
+13. Mining Modes
+14. Pausing the quarry
+14. Viewing progress
+16. Video Tutorial
+
+-- Page 3
+Building the quarry
+
+Step 1.
+Place down a chest
+
+Step 2.
+Place a diamond block
+against each side of
+the chest. You will need 4 diamond blocks.
+
+-- Page 4
+Step 3.
+Place a redstone block in each of the 4 corners.
+
+Step 4.
+Place iron bars running outwards from the diamond blocks. These will define your quarry's mining area. Itis only necessary to run it from 2 sides.
+
+-- Page 5
+Step 5.
+Place chests on either side of the iron bars or on top of theiron bars for storage of mined items. They must tuch the iron bars and be in the defined quarry area. 
+
+Step 6.
+Place fuel in the center chest. (Look on page 7 for details)
+
+-- page 6
+Step 7.
+Sneak-left-click the chest to create the quarry. It should now begin mining. 
+
+-- Page 7 
+     Fuel
+Quarries will accept the following types of fuel:
+- Charcoal
+- Coal
+- Coal Blocks
+- Redstone
+- Redstone Blocks
+
+--
+   Fuel Efficiency
+
+Redstone is the most efficient (Provides the most energy).
+Redstone blocks are equivalent to 9 redstone dusts.
+Coal is half as efficient as redstone.
+Coal blocks are equivalent to 9 coal.
+Charcoal is half as efficient as coal. 
+
+--
+    Upgrades
+
+Quarries are upgradeable. Place a chest on one of the 5 redstone corners.
+
+Mining delay - A max of 76 emerald blocks can be placed in the upgrade chest to reduce delay between each block(s) mined
+
+--
+Blocks mined at a time - A max of 36 diamond blocks can be placed in the upgrade chest to increase the number of blocks mined after each delay.
+
+Efficiency - a max of 100 gold blocks can be placed in the upgrade chest to increase ifficiency. 
+--
+Ender quarry replaces mined blocks with dirt - Place a nether star in the upgrade chest to make ender quarrying replace mined blocks with dirt. This will prevent holes under the ground. 
+
+--
+    Block Filters
+
+place a shulker box on one of the 4 redstone corners. Then place blocks which you would like to void into this box. Your quarry will still mine those blocks and use energy on them. But it will save storage space!
+
+--
+    Mining Modes
+Sneak-lef click your center chest with an empty hand to toggle between classic and ender mode. Classic mode mines everything. Ender mode ignores stone, grass and dirt, which is a lot faster, but uses 50x energy. 
+
+--
+   Pausing the Quarry
+Left click one of the 4 diamond blocks to pause/unpause your quarry.
+
+Viewing Quarry Progress
+Sneak-right-click the center chest with an empty hand to view
+
+--
+Resetting mining level
+
+If you'd like to make the quarry start mining from the top again, sneak-left-click one of the 4 diamond blocks with an empty hand. 
+
+--
+
+   Video Tutorial
+I also made a video explaining most of this stuff: 
+
+Watch it on youtube by clicking here. 
+
