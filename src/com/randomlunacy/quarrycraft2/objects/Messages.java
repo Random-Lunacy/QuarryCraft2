@@ -166,7 +166,7 @@ public class Messages {
 
     public static String getStatusCraftingStorageBlocks(boolean crafting)
     {
-        return String.format(STATUS_CRAFTING, crafting)
+        return String.format(STATUS_CRAFTING, crafting);
     }
 
     public static String getStatusFortune(int fortuneLevel) {
