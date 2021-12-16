@@ -51,7 +51,7 @@ public class Messages {
             MESSAGE_PREFIX + ChatColor.RED + "Your quarry at %s has run out of fuel and is now paused." + ChatColor.RESET;
     private static final String FINISHED = ChatColor.BLUE + "Your quarry at %s is now finished" + ChatColor.RESET;
     private static final String WELCOME =
-            MESSAGE_PREFIX + "Type " + ChatColor.BLUE + "/quarrycraft guide" + ChatColor.RESET + " to get started!";
+            MESSAGE_PREFIX + "Type " + ChatColor.BLUE + "/quarrycraft2 guide" + ChatColor.RESET + " to get started!";
     private static final String BUILD_NOT_ALLOWED_HERE =
             MESSAGE_PREFIX + ChatColor.RED + "You may not build your quarry here." + ChatColor.RESET;
 
