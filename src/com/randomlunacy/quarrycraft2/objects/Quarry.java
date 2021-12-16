@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -44,7 +43,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class Quarry extends BukkitRunnable {
     Location centreChestLocation;
     Chest centreChest;
-    float storedEnergy;
+    float storedEnergy; //TODO: Add Persistance of storedEnergy
     int minX;
     int minZ;
     int maxX;
@@ -80,10 +79,10 @@ public class Quarry extends BukkitRunnable {
     float energyMod = 1.0f;
 
     HashMap<Chunk, Boolean> chunks = new HashMap<>();
-    EnumMap<Material, ItemStack> compressionMap = new EnumMap<>(Material.class);
-    Queue<ItemStack> toGoInChests = new ArrayBlockingQueue<>(30);
+    EnumMap<Material, ItemStack> compressionMap = new EnumMap<>(Material.class); //TODO: Make compressionMap global/cross quarry
+    Queue<ItemStack> toGoInChests = new ArrayBlockingQueue<>(30);  //TODO: Add Persistance of toGoInChests
 
-    // TODO: Make this configureable
+    // TODO: Make ignored materials configureable
     static Material[] ignored =
             {Material.BEDROCK, Material.AIR, Material.WATER, Material.LAVA, Material.GRASS, Material.GRASS_BLOCK,
                     Material.DIRT_PATH, Material.STONE, Material.COBBLESTONE, Material.DIRT, Material.COARSE_DIRT};
@@ -567,7 +566,8 @@ public class Quarry extends BukkitRunnable {
 
                     if (stackEnergy <= energyToConsume) {
                         // Take the whole stack
-                        centreInv.setItem(i, new ItemStack(Material.AIR));
+                        if (centreInv.getItem(i).getType() != Material.NETHER_STAR)
+                            centreInv.setItem(i, new ItemStack(Material.AIR));
 
                         energyToConsume -= stackEnergy;
 
