@@ -2,7 +2,6 @@ package com.randomlunacy.quarrycraft2.listeners;
 
 import com.randomlunacy.quarrycraft2.QuarryCraft2;
 import com.randomlunacy.quarrycraft2.objects.Messages;
-import com.randomlunacy.quarrycraft2.objects.Quarries;
 import com.randomlunacy.quarrycraft2.objects.Quarry;
 
 import org.bukkit.Material;
@@ -33,9 +32,6 @@ public class PlayerClickHandler implements Listener {
         }
         return permission;
     }
-
-    // Quarries quarries = QuarryCraft2.getInstance().getQuarryList();
-    // int quarryLimit = QuarryCraft2.getInstance().getMainConfig().getQuarryLimit();
 
     // Handler for toggling Quarry pause state
     @EventHandler
@@ -75,55 +71,62 @@ public class PlayerClickHandler implements Listener {
         }
     }
 
+    // Handler for left click on chest
+    @EventHandler
+    public void onPlayerLeftClickChest(PlayerInteractEvent e) {
+        if (e.getClickedBlock().getType().equals(Material.CHEST)) {
+            Chest centreChest = (Chest) e.getClickedBlock().getState();
+            if (Quarry.isQuarryLayout(centreChest)) {
+                if (e.getPlayer().hasPermission(QuarryCraft2.BUILD_QUARRIES_PERMISSION)
+                        && QuarryCraft2.getInstance().getQuarryList().countQuarries(e.getPlayer()) < QuarryCraft2.getInstance()
+                                .getMainConfig().getQuarryLimit()
+                        && QuarryCraft2.getInstance().getQuarryList().addQuarry(centreChest, e.getPlayer().getName())) {
+                    // Create Quarry
+                    if (!QuarryCraft2.getInstance().getQuarryList().getQuarry(centreChest).isMarkedForDeletion())
+                        e.getPlayer().sendMessage(Messages.getQuarryCreated());
+                    e.setCancelled(true);
+                } else if (QuarryCraft2.getInstance().getQuarryList().getQuarry(centreChest) != null) {
+                    // Toggle Ender mining mode
+                    if (!QuarryCraft2.getInstance().getQuarryList().getQuarry(centreChest).isMarkedForDeletion())
+                        e.getPlayer().sendMessage(
+                                QuarryCraft2.getInstance().getQuarryList().getQuarry(centreChest).toggleEnderMining());
+                    e.setCancelled(true);
+                } else if (!e.getPlayer().hasPermission(QuarryCraft2.BUILD_QUARRIES_PERMISSION)) {
+                    // No build permissions
+                    e.getPlayer().sendMessage(Messages.getNoBuildPermission());
+                    e.setCancelled(true);
+                } else if (QuarryCraft2.getInstance().getQuarryList().countQuarries(e.getPlayer()) >= QuarryCraft2.getInstance()
+                        .getMainConfig().getQuarryLimit()) {
+                    // Quarry limit reached
+                    e.getPlayer().sendMessage(Messages
+                            .getQuarryLimitReached(QuarryCraft2.getInstance().getMainConfig().getQuarryLimit()));
+                    e.setCancelled(true);
+                } else {
+                    // Quarries intersect
+                    e.getPlayer().sendMessage(Messages.getQuarryIntersectError());
+                    e.setCancelled(true);
+                }
+                QuarryCraft2.getInstance().getQuarryList().saveQuarries();
+            }
+        }
+    }
 
     @EventHandler
-            public void onPlayer(PlayerInteractEvent e) {
-    if(e.getClickedBlock().getType().equals(Material.CHEST))
-
-    {
-        Chest centreChest = (Chest) e.getClickedBlock().getState();
-        if (Quarry.isQuarryLayout(centreChest)) {
-            if (e.getPlayer().hasPermission(QuarryCraft2.BUILD_QUARRIES_PERMISSION)
-                    && quarries.countQuarries(e.getPlayer()) < quarryLimit
-                    && quarries.addQuarry(centreChest, e.getPlayer().getName())) {
-                if (!quarries.getQuarry(centreChest).isMarkedForDeletion())
-                    e.getPlayer().sendMessage(Messages.getQuarryCreated());
-                e.setCancelled(true);
-            } else if (quarries.getQuarry(centreChest) != null) {
-                if (!quarries.getQuarry(centreChest).isMarkedForDeletion())
-                    e.getPlayer().sendMessage(quarries.getQuarry(centreChest).toggleEnderMining());
-                e.setCancelled(true);
-            } else if (!e.getPlayer().hasPermission(QuarryCraft2.BUILD_QUARRIES_PERMISSION)) {
-                e.getPlayer().sendMessage(Messages.getNoBuildPermission());
-                e.setCancelled(true);
-            } else if (quarries.countQuarries(e.getPlayer()) >= quarryLimit) {
-                e.getPlayer().sendMessage(Messages.getQuarryLimitReached(quarryLimit));
-                e.setCancelled(true);
-            } else {
-                e.getPlayer().sendMessage(Messages.getQuarryIntersectError());
-                e.setCancelled(true);
-            }
-            quarries.saveQuarries();
-        }
-    }}
-
-    if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK))
-
-    {
-        if (!e.getPlayer().isSneaking())
-            return;
-        Block clicked = e.getClickedBlock();
-        if (clicked.getType().equals(Material.CHEST)) {
-            Chest centreChest = (Chest) clicked.getState();
-            if (Quarry.isQuarryLayout(centreChest)) {
-                Quarry q = quarries.getQuarry(centreChest);
-                if (q != null && e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.AIR)) {
-                    q.sendProgress(e.getPlayer());
-                    e.setCancelled(true);
+    public void onPlayerSneakRightClickChest(PlayerInteractEvent e) {
+        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+            if (!e.getPlayer().isSneaking())
+                return;
+            Block clicked = e.getClickedBlock();
+            if (clicked.getType().equals(Material.CHEST)) {
+                Chest centreChest = (Chest) clicked.getState();
+                if (Quarry.isQuarryLayout(centreChest)) {
+                    Quarry q = QuarryCraft2.getInstance().getQuarryList().getQuarry(centreChest);
+                    if (q != null && e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.AIR)) {
+                        q.sendProgress(e.getPlayer());
+                        e.setCancelled(true);
+                    }
                 }
             }
         }
     }
-}
-
 }
