@@ -1166,7 +1166,7 @@ public class Quarry extends BukkitRunnable {
         }
 
         //Clean up any accidental drops, like dripstone: 
-        Collection<Entity> entities = world.getNearbyEntities(blockToMine.getLocation(), 3, 10, 3);
+        Collection<Entity> entities = world.getNearbyEntities(blockToMine.getLocation(), 3, 30, 3);
         if(!entities.isEmpty())
         {
             for (Entity entity : entities) {
