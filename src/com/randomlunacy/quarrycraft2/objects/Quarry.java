@@ -32,6 +32,7 @@ import org.bukkit.block.data.Waterlogged;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -1162,6 +1163,19 @@ public class Quarry extends BukkitRunnable {
                 resetPlatformCursor();
                 platformDone = false;
         }
+        }
+
+        //Clean up any accidental drops, like dripstone: 
+        Collection<Entity> entities = world.getNearbyEntities(blockToMine.getLocation(), 3, 10, 3);
+        if(!entities.isEmpty())
+        {
+            for (Entity entity : entities) {
+                if(entity.getType() == EntityType.DROPPED_ITEM && entity instanceof Item dropped)
+                {
+                    toGoInChests.add(dropped.getItemStack());
+                    entity.remove();
+                }
+            }
         }
 
     }
