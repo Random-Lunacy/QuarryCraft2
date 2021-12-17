@@ -51,7 +51,7 @@ public class Messages {
             MESSAGE_PREFIX + ChatColor.RED + "Your quarry at %s has run out of fuel and is now paused." + ChatColor.RESET;
     private static final String FINISHED = ChatColor.BLUE + "Your quarry at %s is now finished" + ChatColor.RESET;
     private static final String WELCOME =
-            MESSAGE_PREFIX + "Type " + ChatColor.BLUE + "/quarrycraft guide" + ChatColor.RESET + " to get started!";
+            MESSAGE_PREFIX + "Type " + ChatColor.BLUE + "/quarrycraft2 guide" + ChatColor.RESET + " to get started!";
     private static final String BUILD_NOT_ALLOWED_HERE =
             MESSAGE_PREFIX + ChatColor.RED + "You may not build your quarry here." + ChatColor.RESET;
 
@@ -68,8 +68,9 @@ public class Messages {
     private static final String STATUS_ENDER_REPLACE =
             "    Replacing blocks with dirt: " + ChatColor.GOLD + "%b" + ChatColor.RESET;
 
-    private static final String STATUS_SILK = "     Silk Touch: " + ChatColor.BLUE + "On" + ChatColor.RESET;
-    private static final String STATUS_FORTUNE = "  Fortune Level: " + ChatColor.BLUE + "%d" + ChatColor.RESET;
+    private static final String STATUS_SILK = "    Silk Touch: " + ChatColor.BLUE + "On" + ChatColor.RESET;
+    private static final String STATUS_FORTUNE = "    Fortune Level: " + ChatColor.BLUE + "%d" + ChatColor.RESET;
+    private static final String STATUS_CRAFTING = "    Crafting Storage Blocks: " + ChatColor.BLUE + "On" + ChatColor.RESET;
 
     public static String getMessagePrefix() {
         return MESSAGE_PREFIX;
@@ -161,6 +162,11 @@ public class Messages {
 
     public static String getStatusSilkTouch(boolean silking) {
         return String.format(STATUS_SILK, silking);
+    }
+
+    public static String getStatusCraftingStorageBlocks(boolean crafting)
+    {
+        return String.format(STATUS_CRAFTING, crafting);
     }
 
     public static String getStatusFortune(int fortuneLevel) {
