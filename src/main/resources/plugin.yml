@@ -36,3 +36,9 @@ permissions:
   quarrycraft2.build:
     description: Gives permission to build quarries
     default: op
+  quarrycraft2.use:
+    description: Gives permission to interact with quarries
+    default: true
+  quarrycraft2.useall:
+    description: Give permission to interact with all quarries
+    default: op
