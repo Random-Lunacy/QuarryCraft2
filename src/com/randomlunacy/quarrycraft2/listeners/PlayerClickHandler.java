@@ -2,11 +2,13 @@ package com.randomlunacy.quarrycraft2.listeners;
 
 import com.randomlunacy.quarrycraft2.QuarryCraft2;
 import com.randomlunacy.quarrycraft2.objects.Messages;
+import com.randomlunacy.quarrycraft2.objects.Quarries;
 import com.randomlunacy.quarrycraft2.objects.Quarry;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -71,46 +73,50 @@ public class PlayerClickHandler implements Listener {
         }
     }
 
-    // Handler for left click on chest
+    // Handler for sneak left click on chest
     @EventHandler
-    public void onPlayerLeftClickChest(PlayerInteractEvent e) {
-        if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+    public void onPlayerSneakLeftClickChest(PlayerInteractEvent e) {
+        // Ignore non-sneak clicks
+        Player player = e.getPlayer();
+        if (!player.isSneaking())
+            return;
 
-            if (e.getClickedBlock().getType().equals(Material.CHEST)) {
-                Chest centreChest = (Chest) e.getClickedBlock().getState();
-                if (Quarry.isQuarryLayout(centreChest)) {
-                    if (e.getPlayer().hasPermission(QuarryCraft2.BUILD_QUARRIES_PERMISSION)
-                            && QuarryCraft2.getInstance().getQuarryList().countQuarries(e.getPlayer()) < QuarryCraft2
-                                    .getInstance().getMainConfig().getQuarryLimit()
-                            && QuarryCraft2.getInstance().getQuarryList().addQuarry(centreChest, e.getPlayer().getName())) {
-                        // Create Quarry
-                        if (!QuarryCraft2.getInstance().getQuarryList().getQuarry(centreChest).isMarkedForDeletion())
-                            e.getPlayer().sendMessage(Messages.getQuarryCreated());
-                        e.setCancelled(true);
-                    } else if (QuarryCraft2.getInstance().getQuarryList().getQuarry(centreChest) != null) {
-                        // Toggle Ender mining mode
-                        if (!QuarryCraft2.getInstance().getQuarryList().getQuarry(centreChest).isMarkedForDeletion())
-                            e.getPlayer().sendMessage(
-                                    QuarryCraft2.getInstance().getQuarryList().getQuarry(centreChest).toggleEnderMining());
-                        e.setCancelled(true);
-                    } else if (!e.getPlayer().hasPermission(QuarryCraft2.BUILD_QUARRIES_PERMISSION)) {
-                        // No build permissions
-                        e.getPlayer().sendMessage(Messages.getNoBuildPermission());
-                        e.setCancelled(true);
-                    } else if (QuarryCraft2.getInstance().getQuarryList().countQuarries(e.getPlayer()) >= QuarryCraft2
-                            .getInstance().getMainConfig().getQuarryLimit()) {
-                        // Quarry limit reached
-                        e.getPlayer().sendMessage(Messages
-                                .getQuarryLimitReached(QuarryCraft2.getInstance().getMainConfig().getQuarryLimit()));
-                        e.setCancelled(true);
-                    } else {
-                        // Quarries intersect
-                        e.getPlayer().sendMessage(Messages.getQuarryIntersectError());
-                        e.setCancelled(true);
-                    }
-            QuarryCraft2.getInstance().getQuarryList().saveQuarries();
+        if (e.getAction().equals(Action.LEFT_CLICK_BLOCK) && e.getClickedBlock().getType().equals(Material.CHEST)) {
+
+            Chest centreChest = (Chest) e.getClickedBlock().getState();
+            if (Quarry.isQuarryLayout(centreChest)) {
+                Quarries quarryList = QuarryCraft2.getInstance().getQuarryList();
+                if (quarryList.getQuarry(centreChest) != null) {
+                    // Toggle Ender mining mode if quarry exists
+                    if (!quarryList.getQuarry(centreChest).isMarkedForDeletion())
+                        player.sendMessage(quarryList.getQuarry(centreChest).toggleEnderMining());
+                    e.setCancelled(true);
+                } else {
+                    // Attempt to create the quarry
+                    createQuarry(player, centreChest, quarryList);
+                    e.setCancelled(true);
                 }
+                quarryList.saveQuarries();
             }
+        }
+    }
+
+    private void createQuarry(Player player, Chest centreChest, Quarries quarryList) {
+        if (player.hasPermission(QuarryCraft2.BUILD_QUARRIES_PERMISSION)
+                && quarryList.countQuarries(player) < QuarryCraft2.getInstance().getMainConfig().getQuarryLimit()
+                && quarryList.addQuarry(centreChest, player.getName())) {
+            // Create Quarry
+            if (!quarryList.getQuarry(centreChest).isMarkedForDeletion())
+                player.sendMessage(Messages.getQuarryCreated());
+        } else if (!player.hasPermission(QuarryCraft2.BUILD_QUARRIES_PERMISSION)) {
+            // No build permissions
+            player.sendMessage(Messages.getNoBuildPermission());
+        } else if (quarryList.countQuarries(player) >= QuarryCraft2.getInstance().getMainConfig().getQuarryLimit()) {
+            // Quarry limit reached
+            player.sendMessage(Messages.getQuarryLimitReached(QuarryCraft2.getInstance().getMainConfig().getQuarryLimit()));
+        } else {
+            // Quarries intersect
+            player.sendMessage(Messages.getQuarryIntersectError());
         }
     }
 
