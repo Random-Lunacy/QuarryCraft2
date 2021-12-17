@@ -102,18 +102,26 @@ public class PlayerClickHandler implements Listener {
     }
 
     private void createQuarry(Player player, Chest centreChest, Quarries quarryList) {
-        if (player.hasPermission(QuarryCraft2.BUILD_QUARRIES_PERMISSION)
-                && quarryList.countQuarries(player) < QuarryCraft2.getInstance().getMainConfig().getQuarryLimit()
-                && quarryList.addQuarry(centreChest, player.getName())) {
-            // Create Quarry
-            if (!quarryList.getQuarry(centreChest).isMarkedForDeletion())
-                player.sendMessage(Messages.getQuarryCreated());
-        } else if (!player.hasPermission(QuarryCraft2.BUILD_QUARRIES_PERMISSION)) {
-            // No build permissions
+        // Check for build permissions
+        if (!player.hasPermission(QuarryCraft2.BUILD_QUARRIES_PERMISSION)) {
+
             player.sendMessage(Messages.getNoBuildPermission());
-        } else if (quarryList.countQuarries(player) >= QuarryCraft2.getInstance().getMainConfig().getQuarryLimit()) {
+            return;
+        }
+
+        // Check for quarry limit reached
+        int quarryLimit = QuarryCraft2.getInstance().getMainConfig().getQuarryLimit();
+        if (quarryList.countQuarries(player) >= quarryLimit) {
             // Quarry limit reached
-            player.sendMessage(Messages.getQuarryLimitReached(QuarryCraft2.getInstance().getMainConfig().getQuarryLimit()));
+            player.sendMessage(Messages.getQuarryLimitReached(quarryLimit));
+            return;
+        }
+
+        // Try to Create Quarry
+        if (quarryList.addQuarry(centreChest, player.getName())) {
+            if (!quarryList.getQuarry(centreChest).isMarkedForDeletion())
+                // Create successful
+                player.sendMessage(Messages.getQuarryCreated());
         } else {
             // Quarries intersect
             player.sendMessage(Messages.getQuarryIntersectError());
