@@ -28,6 +28,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.block.data.Levelled;
+import org.bukkit.block.data.Waterlogged;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -1000,8 +1001,12 @@ public class Quarry extends BukkitRunnable {
             Block checkBlock = blockToMine.getRelative(blockFace);
             Material borderMaterial = Material.GLASS;
 
-            if(ptOutside(checkBlock.getLocation()) && checkBlock.getType().equals(fluid))
+            boolean outside = ptOutside(checkBlock.getLocation());
+
+            if(outside && ((checkBlock.getBlockData() instanceof Waterlogged block && block.isWaterlogged() && checkBlock.isPassable()) || checkBlock.getType().equals(fluid)))
             {
+                //This will set any water block like a source block or flowing water to the border material. 
+                //It will also catch passable waterlogged blocks (no hit-box) that would allow water to flow. 
                 checkBlock.setType(borderMaterial);
             } else if (checkBlock.getX() < blockToMine.getX() && checkBlock.getType().equals(fluid) &&  checkBlock.getBlockData() instanceof Levelled level && level.getLevel() == 0) 
             {
