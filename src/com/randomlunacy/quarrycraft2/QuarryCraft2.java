@@ -14,7 +14,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class QuarryCraft2 extends JavaPlugin {
 
     public static final String PLUGIN_NAME = "QuarryCraft2";
+
+    // Permissions
     public static final String BUILD_QUARRIES_PERMISSION = "quarrycraft2.build";
+    public static final String USE_QUARRIES_PERMISSION = "quarrycraft2.use";
+    public static final String USE_ALL_QUARRIES_PERMISSION = "quarrycraft2.useall";
 
     private static QuarryCraft2 pluginInstance;
 
