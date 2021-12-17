@@ -63,10 +63,13 @@ public class Messages {
             "    Blocks mined at a time: " + ChatColor.DARK_BLUE + "%d" + ChatColor.RESET;
     private static final String STATUS_DIAMOND_TO_UPGRADE =
             "    Diamond blocks to next upgrade: " + ChatColor.AQUA + "%d" + ChatColor.RESET;
-    private static final String STATUS_EFFICIENCY = "    Efficiency: " + ChatColor.YELLOW + "%.2f%" + ChatColor.RESET;
+    private static final String STATUS_EFFICIENCY = "    Efficiency:" + ChatColor.YELLOW + " %.2f%%" + ChatColor.RESET;
     private static final String STATUS_MODE = "    Mining mode: " + ChatColor.GOLD + "%s" + ChatColor.RESET;
     private static final String STATUS_ENDER_REPLACE =
             "    Replacing blocks with dirt: " + ChatColor.GOLD + "%b" + ChatColor.RESET;
+
+    private static final String STATUS_SILK = "     Silk Touch: " + ChatColor.BLUE + "On" + ChatColor.RESET;
+    private static final String STATUS_FORTUNE = "  Fortune Level: " + ChatColor.BLUE + "%d" + ChatColor.RESET;
 
     public static String getMessagePrefix() {
         return MESSAGE_PREFIX;
@@ -154,6 +157,14 @@ public class Messages {
 
     public static String getStatusEnderReplace(boolean replacing) {
         return String.format(STATUS_ENDER_REPLACE, replacing);
+    }
+
+    public static String getStatusSilkTouch(boolean silking) {
+        return String.format(STATUS_SILK, silking);
+    }
+
+    public static String getStatusFortune(int fortuneLevel) {
+        return String.format(STATUS_FORTUNE, fortuneLevel);
     }
 
     public static String getQuarryFinishedStatus(int y) {
