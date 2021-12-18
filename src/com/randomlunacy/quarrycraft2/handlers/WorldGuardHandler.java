@@ -9,7 +9,8 @@ import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 
 public class WorldGuardHandler {
-    private WorldGuardHandler() {}
+    private WorldGuardHandler() {
+    }
 
     public static WorldGuardPlugin getWorldGuard() {
         Plugin plugin = Bukkit.getPluginManager().getPlugin("WorldGuard");

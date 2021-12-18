@@ -91,7 +91,8 @@ public class PlayerClickHandler implements Listener {
                     if (!quarryList.getQuarry(centreChest).isMarkedForDeletion())
                         player.sendMessage(quarryList.getQuarry(centreChest).toggleEnderMining());
                     e.setCancelled(true);
-                } else {
+                }
+                else {
                     // Attempt to create the quarry
                     createQuarry(player, centreChest, quarryList);
                     e.setCancelled(true);
@@ -122,7 +123,8 @@ public class PlayerClickHandler implements Listener {
             if (!quarryList.getQuarry(centreChest).isMarkedForDeletion())
                 // Create successful
                 player.sendMessage(Messages.getQuarryCreated());
-        } else {
+        }
+        else {
             // Quarries intersect
             player.sendMessage(Messages.getQuarryIntersectError());
         }
