@@ -980,6 +980,7 @@ public class Quarry extends BukkitRunnable {
 
     private void handleFluid(Material fluid, Block blockToMine) {
         Material thisMaterial = blockToMine.getType();
+        List<Material> underwaterPlants = QuarryCraft2.getInstance().getMainConfig().getUnderwaterPlants();
 
         Material replacement = Material.GLASS;
         Set<BlockFace> faces = Set.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
@@ -994,6 +995,11 @@ public class Quarry extends BukkitRunnable {
                     && checkBlock.isPassable()) || checkBlock.getType().equals(fluid))) {
                 // This will set any water block like a source block or flowing water to the border material.
                 // It will also catch passable waterlogged blocks (no hit-box) that would allow water to flow.
+                checkBlock.setType(borderMaterial);
+            }
+            else if (outside && underwaterPlants.contains(checkBlock.getType())) {
+                // This will set underwater plants that do not report as Waterlogged to the border material.
+                // The list of types to check is  defined in config.
                 checkBlock.setType(borderMaterial);
             }
             else if (checkBlock.getX() < blockToMine.getX() && checkBlock.getType().equals(fluid)
