@@ -6,11 +6,14 @@ import com.randomlunacy.quarrycraft2.objects.Quarry;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class QuarryCleaner extends BukkitRunnable {
+public class QuarryCleaner extends BukkitRunnable
+{
     @Override
-    public void run() {
+    public void run()
+    {
         for (Quarry q : QuarryCraft2.getInstance().getQuarryList().getQuarries())
-            if ((q.isMarkedForDeletion() || !Quarry.isQuarryLayout(q.getCentreChest())) && q.isClearedPlatform()) {
+            if ((q.isMarkedForDeletion() || !Quarry.isQuarryLayout(q.getCentreChest())) && q.isClearedPlatform())
+            {
 
                 q.tellOwner(Messages.getQuarryDestroyed(q.getCentreChestLocation()));
                 QuarryCraft2.getInstance().getQuarryList().removeQuarry(q);

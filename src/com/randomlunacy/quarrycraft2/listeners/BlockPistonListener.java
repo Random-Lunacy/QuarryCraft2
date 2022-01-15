@@ -8,12 +8,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 
-public class BlockPistonListener implements Listener {
+public class BlockPistonListener implements Listener
+{
     @EventHandler
-    public void pistonRetractEvent(BlockPistonRetractEvent e) {
+    public void pistonRetractEvent(BlockPistonRetractEvent e)
+    {
         Location pLoc = e.getBlock().getLocation();
         if (!QuarryCraft2.getInstance().getQuarryList().pistonAllowed(pLoc.getWorld(), pLoc.getBlockX(), pLoc.getBlockY(),
-                pLoc.getBlockZ())) {
+                pLoc.getBlockZ()))
+        {
             e.setCancelled(true);
         }
     }
@@ -22,10 +25,12 @@ public class BlockPistonListener implements Listener {
      * @param e
      */
     @EventHandler
-    public void pistonExtendEvent(BlockPistonExtendEvent e) {
+    public void pistonExtendEvent(BlockPistonExtendEvent e)
+    {
         Location pLoc = e.getBlock().getLocation();
         if (!QuarryCraft2.getInstance().getQuarryList().pistonAllowed(pLoc.getWorld(), pLoc.getBlockX(), pLoc.getBlockY(),
-                pLoc.getBlockZ())) {
+                pLoc.getBlockZ()))
+        {
             e.setCancelled(true);
         }
     }

@@ -18,11 +18,14 @@ import net.md_5.bungee.api.chat.ClickEvent.Action;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public class GuideBook {
+public class GuideBook
+{
     private final Map<Player, Date> usedMap = new HashMap<>(); // TODO: Add persistence of usedMap for tracking Guidebook use
 
-    private long getTimeSinceLastUse(Player p) {
-        if (usedMap.containsKey(p)) {
+    private long getTimeSinceLastUse(Player p)
+    {
+        if (usedMap.containsKey(p))
+        {
             return new Date().getTime() - usedMap.get(p).getTime();
         }
 
@@ -31,8 +34,10 @@ public class GuideBook {
     }
 
     // TODO: Move guidebook contents to external JSON, to make maintenance easier
-    public void giveGuideBook(Player p) {
-        if (getTimeSinceLastUse(p) > QuarryCraft2.getInstance().getMainConfig().getGuideBookCooldown()) {
+    public void giveGuideBook(Player p)
+    {
+        if (getTimeSinceLastUse(p) > QuarryCraft2.getInstance().getMainConfig().getGuideBookCooldown())
+        {
 
             ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
             BookMeta bookMeta = (BookMeta) book.getItemMeta();
@@ -115,7 +120,8 @@ public class GuideBook {
             usedMap.put(p, new Date());
         }
 
-        else {
+        else
+        {
             p.sendMessage(Messages.getPleaseWait(
                     (long) ((QuarryCraft2.getInstance().getMainConfig().getGuideBookCooldown() - getTimeSinceLastUse(p))
                             / 1000.0))

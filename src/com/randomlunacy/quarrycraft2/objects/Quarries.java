@@ -18,39 +18,49 @@ import org.bukkit.World;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 
-public class Quarries {
+public class Quarries
+{
     private static final String QUARRIES_FILE_NAME = "quarries.txt";
     private List<Quarry> myQuarries;
 
-    public Quarries() {
+    public Quarries()
+    {
         myQuarries = new ArrayList<>();
         loadQuarries();
     }
 
-    public List<Quarry> getQuarries() {
+    public List<Quarry> getQuarries()
+    {
         return myQuarries;
     }
 
-    public Quarry getQuarry(Chest centreChest) {
-        for (Quarry quarry : myQuarries) {
+    public Quarry getQuarry(Chest centreChest)
+    {
+        for (Quarry quarry : myQuarries)
+        {
             if (quarry.isSameCentreChest(centreChest))
                 return quarry;
         }
         return null;
     }
 
-    public void removeQuarry(Quarry q) {
+    public void removeQuarry(Quarry q)
+    {
         int i = findQuarryIndex(q);
-        if (i != -1) {
+        if (i != -1)
+        {
             myQuarries.get(i).cancel();
             myQuarries.remove(i);
             saveQuarries();
         }
     }
 
-    private int findQuarryIndex(Quarry q) {
-        for (int i = 0; i < myQuarries.size(); i++) {
-            if (q.getLocation().equals(myQuarries.get(i).getLocation())) {
+    private int findQuarryIndex(Quarry q)
+    {
+        for (int i = 0; i < myQuarries.size(); i++)
+        {
+            if (q.getLocation().equals(myQuarries.get(i).getLocation()))
+            {
                 return i;
             }
         }
@@ -59,13 +69,16 @@ public class Quarries {
     }
 
     // Check if the file exists and is not a directory
-    private static boolean isFileExists(File file) {
+    private static boolean isFileExists(File file)
+    {
         return file.exists() && !file.isDirectory();
     }
 
     // TODO: Update to store in plugin configuration folder rather than world folders
-    public void saveQuarries() {
-        for (World w : Bukkit.getWorlds()) {
+    public void saveQuarries()
+    {
+        for (World w : Bukkit.getWorlds())
+        {
             String wName = w.getName();
             String fileSeparator = System.getProperty("file.separator");
             File folder = new File(wName + fileSeparator + QuarryCraft2.PLUGIN_NAME);
@@ -74,7 +87,8 @@ public class Quarries {
             File quarryFile = new File(path);
             quarryFile.delete();
             String fileString = "";
-            for (Quarry q : myQuarries) {
+            for (Quarry q : myQuarries)
+            {
                 Location quarryLoc = q.getLocation();
                 if (!quarryLoc.getWorld().getName().equals(wName))
                     continue;
@@ -87,12 +101,14 @@ public class Quarries {
                         + ";" + q.getOwner() + ";" + q.isPaused() + "\n";
             }
 
-            try {
+            try
+            {
                 FileOutputStream fos = new FileOutputStream(path);
                 fos.write(fileString.getBytes());
                 fos.flush();
                 fos.close();
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 Logger.logSevere("Failure writing to '" + path + "'': " + e);
             }
         }
@@ -100,17 +116,21 @@ public class Quarries {
     }
 
     // TODO: Update to store in plugin configuration folder rather than world folders
-    private void loadQuarries() {
-        for (World w : Bukkit.getWorlds()) {
+    private void loadQuarries()
+    {
+        for (World w : Bukkit.getWorlds())
+        {
             String wName = w.getName();
             String fileSeparator = System.getProperty("file.separator");
             String path = wName + fileSeparator + QuarryCraft2.PLUGIN_NAME + fileSeparator + QUARRIES_FILE_NAME;
 
-            if (!isFileExists(new File(path))) {
+            if (!isFileExists(new File(path)))
+            {
                 // No qc2-quarries.txt exists, create one.
                 saveQuarries();
             }
-            try {
+            try
+            {
                 BufferedReader inFile = new BufferedReader(new FileReader(path));
                 String currentCoords;
                 String[] locString;
@@ -123,7 +143,8 @@ public class Quarries {
                 int y;
                 int z;
                 String ownerName;
-                do {
+                do
+                {
                     currentCoords = inFile.readLine();
                     if (currentCoords == null)
                         break;
@@ -145,14 +166,17 @@ public class Quarries {
 
                 } while (currentCoords != null);
                 inFile.close();
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 Logger.logSevere("Failure reading from '" + path + "'': " + e);
             }
         }
     }
 
-    public boolean addQuarry(Chest centreChest, String name) {
-        if (getQuarry(centreChest) == null) {
+    public boolean addQuarry(Chest centreChest, String name)
+    {
+        if (getQuarry(centreChest) == null)
+        {
             Quarry quarry = new Quarry(centreChest, name);
             if (quarryIntersects(quarry))
                 return false;
@@ -164,11 +188,14 @@ public class Quarries {
     }
 
     public boolean addQuarry(Location centreChestLocation, int minX, int maxX, int minZ, int maxZ, boolean mode, String name,
-            boolean paused) {
-        if (centreChestLocation.getWorld().getBlockAt(centreChestLocation).getType().equals(Material.CHEST)) {
+            boolean paused)
+    {
+        if (centreChestLocation.getWorld().getBlockAt(centreChestLocation).getType().equals(Material.CHEST))
+        {
             Quarry quarry = new Quarry((Chest) centreChestLocation.getWorld().getBlockAt(centreChestLocation).getState(), minX,
                     maxX, minZ, maxZ, mode, name);
-            if (quarryIntersects(quarry)) {
+            if (quarryIntersects(quarry))
+            {
                 return false;
             }
             quarry.setPaused(paused);
@@ -179,7 +206,8 @@ public class Quarries {
         return false;
     }
 
-    public int countQuarries(Player p) {
+    public int countQuarries(Player p)
+    {
         int count = 0;
         for (Quarry q : myQuarries)
             if (q.isOwner(p))
@@ -187,8 +215,10 @@ public class Quarries {
         return count;
     }
 
-    private boolean quarryIntersects(Quarry qc) {
-        for (Quarry q : myQuarries) {
+    private boolean quarryIntersects(Quarry qc)
+    {
+        for (Quarry q : myQuarries)
+        {
             if (qc.getCentreChestLocation().equals(q.getCentreChestLocation()))
                 continue;
             if (q.ptIntersects(qc.getWorld(), qc.getMinX(), qc.getMinZ())
@@ -204,22 +234,26 @@ public class Quarries {
         return false;
     }
 
-    public boolean canInteract(Location l, Player p) {
+    public boolean canInteract(Location l, Player p)
+    {
         for (Quarry q : myQuarries)
             if (!q.canInteractAt(l, p))
                 return false;
         return true;
     }
 
-    public boolean canBreak(Location l, Player p) {
+    public boolean canBreak(Location l, Player p)
+    {
         for (Quarry q : myQuarries)
             if (!q.canBreak(l, p))
                 return false;
         return true;
     }
 
-    public boolean pistonAllowed(World w, int x, int y, int z) {
-        for (Quarry q : myQuarries) {
+    public boolean pistonAllowed(World w, int x, int y, int z)
+    {
+        for (Quarry q : myQuarries)
+        {
             if (!q.pistonAllowed(w, x, y, z))
                 return false;
         }
