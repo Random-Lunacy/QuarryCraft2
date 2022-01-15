@@ -3,7 +3,7 @@ Bukkit
 Cooldown
 greifprevention
 quarrycraft
-SEAGRASS
+seagrass
 Shulker
 wordlguard
 worldguard
