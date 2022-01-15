@@ -34,11 +34,11 @@ Step 3.
 Place a redstone block in each of the 4 corners.
 
 Step 4.
-Place iron bars running outwards from the diamond blocks. These will define your quarry's mining area. Itis only necessary to run it from 2 sides.
+Place iron bars running outwards from the diamond blocks. These will define your quarry's mining area. It is only necessary to run it from 2 sides.
 
 -- Page 5
 Step 5.
-Place chests on either side of the iron bars or on top of theiron bars for storage of mined items. They must tuch the iron bars and be in the defined quarry area. 
+Place chests on either side of the iron bars or on top of the iron bars for storage of mined items. They must touch the iron bars and be in the defined quarry area. 
 
 Step 6.
 Place fuel in the center chest. (Look on page 7 for details)
@@ -75,7 +75,7 @@ Mining delay - A max of 76 emerald blocks can be placed in the upgrade chest to 
 --
 Blocks mined at a time - A max of 36 diamond blocks can be placed in the upgrade chest to increase the number of blocks mined after each delay.
 
-Efficiency - a max of 100 gold blocks can be placed in the upgrade chest to increase ifficiency. 
+Efficiency - a max of 100 gold blocks can be placed in the upgrade chest to increase efficiency. 
 --
 Ender quarry replaces mined blocks with dirt - Place a nether star in the upgrade chest to make ender quarrying replace mined blocks with dirt. This will prevent holes under the ground. 
 
