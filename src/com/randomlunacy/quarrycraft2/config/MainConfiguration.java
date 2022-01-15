@@ -30,7 +30,7 @@ public class MainConfiguration extends Configuration {
 
     private String[] defaultUnderwaterPlants = {"SEAGRASS", "TALL_SEAGRASS", "KELP", "KELP_PLANT"};
 
-    // TODO: Verify that this gives adequate protection in WorldGuard and/or make configerable
+    // TODO: Verify that this gives adequate protection in WorldGuard and/or make configurable
     private int maxWGY = 100;
     private int minWGY = 20;
 
@@ -53,7 +53,10 @@ public class MainConfiguration extends Configuration {
 
     private void buildPlantMaterialList() {
         underwaterPlantMaterials.clear();
-        for (String value : defaultUnderwaterPlants) {
+        if (null == underwaterPlants || underwaterPlants.isEmpty()) {
+            this.underwaterPlants = Arrays.asList(defaultUnderwaterPlants);
+        }
+        for (String value : underwaterPlants) {
             underwaterPlantMaterials.add(Material.getMaterial(value));
         }
     }
