@@ -49,7 +49,8 @@ public abstract class Configuration {
                 this.configFile.getParentFile().mkdirs();
                 if (empty) {
                     this.configFile.createNewFile();
-                } else {
+                }
+                else {
                     InputStream in = getClass().getClassLoader().getResourceAsStream(this.resourceName);
                     OutputStream out = new FileOutputStream(this.configFile);
                     byte[] copyBuffer = new byte[1024];
@@ -60,7 +61,8 @@ public abstract class Configuration {
                     out.close();
                     in.close();
                 }
-            } else {
+            }
+            else {
                 Logger.logNotice("Found existing file at " + this.configName + " - not creating a new one");
             }
         } catch (IOException e) {

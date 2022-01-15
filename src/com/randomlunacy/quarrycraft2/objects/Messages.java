@@ -6,7 +6,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 public class Messages {
-    private Messages() {}
+    private Messages() {
+    }
 
     public static final String MESSAGE_PREFIX =
             ChatColor.GREEN + "[" + ChatColor.BLUE + QuarryCraft2.PLUGIN_NAME + ChatColor.GREEN + "] " + ChatColor.RESET;
@@ -164,8 +165,7 @@ public class Messages {
         return String.format(STATUS_SILK, silking);
     }
 
-    public static String getStatusCraftingStorageBlocks(boolean crafting)
-    {
+    public static String getStatusCraftingStorageBlocks(boolean crafting) {
         return String.format(STATUS_CRAFTING, crafting);
     }
 

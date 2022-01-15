@@ -5,7 +5,8 @@ import java.util.logging.Level;
 import com.randomlunacy.quarrycraft2.QuarryCraft2;
 
 public class Logger {
-    private Logger() {}
+    private Logger() {
+    }
 
     public static void logDebug(String message) {
         if (Boolean.TRUE.equals(QuarryCraft2.getInstance().getMainConfig().isDebugEnabled())) {

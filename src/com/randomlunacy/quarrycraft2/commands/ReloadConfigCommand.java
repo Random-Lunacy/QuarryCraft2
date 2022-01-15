@@ -17,7 +17,7 @@ public class ReloadConfigCommand implements CommandExecutor {
      */
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         sender.sendMessage(Messages.getReloadingConfig());
-        QuarryCraft2.getInstance().reloadConfig();;
+        QuarryCraft2.getInstance().reloadConfig();
         return true;
     }
 
