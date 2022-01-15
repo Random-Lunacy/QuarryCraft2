@@ -5,8 +5,11 @@ import com.randomlunacy.quarrycraft2.QuarryCraft2;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
-public class Messages {
-    private Messages() {
+public class Messages
+{
+    private Messages()
+    {
+        // Static Class
     }
 
     public static final String MESSAGE_PREFIX =
@@ -73,139 +76,173 @@ public class Messages {
     private static final String STATUS_FORTUNE = "    Fortune Level: " + ChatColor.BLUE + "%d" + ChatColor.RESET;
     private static final String STATUS_CRAFTING = "    Crafting Storage Blocks: " + ChatColor.BLUE + "On" + ChatColor.RESET;
 
-    public static String getMessagePrefix() {
+    public static String getMessagePrefix()
+    {
         return MESSAGE_PREFIX;
     }
 
-    public static String getReloadingConfig() {
+    public static String getReloadingConfig()
+    {
         return RELOADING_CONFIG;
     }
 
-    public static String getPleaseWait(long seconds) {
+    public static String getPleaseWait(long seconds)
+    {
         return String.format(PLEASE_WAIT, seconds);
     }
 
-    public static String getNoInteractPermission() {
+    public static String getNoInteractPermission()
+    {
         return NO_INTERACT_PERMISSION;
     }
 
-    public static String getBlockCannotBeBroken() {
+    public static String getBlockCannotBeBroken()
+    {
         return BLOCK_CANNOT_BE_BROKEN;
     }
 
-    public static String getQuarryCreated() {
+    public static String getQuarryCreated()
+    {
         return QUARRY_CREATED;
     }
 
-    public static String getNoBuildPermission() {
+    public static String getNoBuildPermission()
+    {
         return NO_BUILD_PERMISSION;
     }
 
-    public static String getQuarryLimitReached(int limit) {
+    public static String getQuarryLimitReached(int limit)
+    {
         return String.format(QUARRY_LIMIT_REACHED, limit);
     }
 
-    public static String getQuarryIntersectError() {
+    public static String getQuarryIntersectError()
+    {
         return INTERSECT_ERROR;
     }
 
-    public static String getMiningCursorReset(int newY) {
+    public static String getMiningCursorReset(int newY)
+    {
         return String.format(MINING_CURSOR_RESET, newY);
     }
 
-    public static String getQuarryDestroyed(Location location) {
+    public static String getQuarryDestroyed(Location location)
+    {
         return String.format(QUARRY_DESTROYED, location.toVector().toString());
     }
 
-    public static String getQuarryOversized(int width, int length) {
+    public static String getQuarryOversized(int width, int length)
+    {
         return String.format(QUARRY_OVERSIZED, width, length);
     }
 
-    public static String getQuarryPaused(Location location) {
+    public static String getQuarryPaused(Location location)
+    {
         return String.format(QUARRY_PAUSED, location.toVector().toString());
     }
 
-    public static String getQuarryRestarted(Location location) {
+    public static String getQuarryRestarted(Location location)
+    {
         return String.format(QUARRY_RESTARTED, location.toVector().toString());
     }
 
-    public static String getQuarryModified(Location location) {
+    public static String getQuarryModified(Location location)
+    {
         return String.format(QUARRY_MODIFIED, location.toVector().toString());
     }
 
-    public static String getStatusMiningDelay(int delay) {
+    public static String getStatusMiningDelay(int delay)
+    {
         return String.format(STATUS_MINING_DELAY, delay);
     }
 
-    public static String getStatusEmeraldBlocksToUpgrade(int count) {
+    public static String getStatusEmeraldBlocksToUpgrade(int count)
+    {
         return String.format(STATUS_EMERALD_TO_UPGRADE, count);
     }
 
-    public static String getStatusMiningRate(int count) {
+    public static String getStatusMiningRate(int count)
+    {
         return String.format(STATUS_MINING_RATE, count);
     }
 
-    public static String getStatusDiamondBlocksToUpgrade(int count) {
+    public static String getStatusDiamondBlocksToUpgrade(int count)
+    {
         return String.format(STATUS_DIAMOND_TO_UPGRADE, count);
     }
 
-    public static String getStatusEfficiency(float percentage) {
+    public static String getStatusEfficiency(float percentage)
+    {
         return String.format(STATUS_EFFICIENCY, percentage);
     }
 
-    public static String getStatusMode(boolean classicMode) {
+    public static String getStatusMode(boolean classicMode)
+    {
         return String.format(STATUS_MODE, classicMode ? MODE_CLASSIC : MODE_ENDER);
     }
 
-    public static String getStatusEnderReplace(boolean replacing) {
+    public static String getStatusEnderReplace(boolean replacing)
+    {
         return String.format(STATUS_ENDER_REPLACE, replacing);
     }
 
-    public static String getStatusSilkTouch(boolean silking) {
+    public static String getStatusSilkTouch(boolean silking)
+    {
         return String.format(STATUS_SILK, silking);
     }
 
-    public static String getStatusCraftingStorageBlocks(boolean crafting) {
+    public static String getStatusCraftingStorageBlocks(boolean crafting)
+    {
         return String.format(STATUS_CRAFTING, crafting);
     }
 
-    public static String getStatusFortune(int fortuneLevel) {
+    public static String getStatusFortune(int fortuneLevel)
+    {
         return String.format(STATUS_FORTUNE, fortuneLevel);
     }
 
-    public static String getQuarryFinishedStatus(int y) {
+    public static String getQuarryFinishedStatus(int y)
+    {
         return String.format(QUARRY_FINISHED_STATUS, y);
     }
 
-    public static String getQuarryMiningStatus(int y) {
+    public static String getQuarryMiningStatus(int y)
+    {
         return String.format(QUARRY_MINING_STATUS, y);
     }
 
-    public static String getQuarryPausedStatus(int y) {
+    public static String getQuarryPausedStatus(int y)
+    {
         return String.format(QUARRY_PAUSED_STATUS, y);
     }
 
-    public static String getMiningModeToggled(boolean classicMode) {
+    public static String getMiningModeToggled(boolean classicMode)
+    {
         return String.format(MINING_MODE_TOGGLED, classicMode ? ChatColor.GREEN + MODE_CLASSIC : ChatColor.BLUE + MODE_ENDER);
     }
 
-    public static String getNoSpace(Location location) {
+    public static String getNoSpace(Location location)
+    {
         return String.format(NO_SPACE, location.toVector().toString());
     }
 
-    public static String getNoFuel(Location location) {
+    public static String getNoFuel(Location location)
+    {
         return String.format(NO_FUEL, location.toVector().toString());
     }
 
-    public static String getFinished(Location location) {
+    public static String getFinished(Location location)
+    {
         return String.format(FINISHED, location.toVector().toString());
     }
 
-    public static String getWelcome() {
+    public static String getWelcome()
+    {
         return WELCOME;
     }
 
-    public static String mayNotBuildHere() {
+    public static String mayNotBuildHere()
+    {
         return BUILD_NOT_ALLOWED_HERE;
     }
 }

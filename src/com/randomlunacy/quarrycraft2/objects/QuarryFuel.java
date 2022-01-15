@@ -2,22 +2,27 @@ package com.randomlunacy.quarrycraft2.objects;
 
 import org.bukkit.Material;
 
-public enum QuarryFuel {
+public enum QuarryFuel
+{
     COAL(50f), COAL_BLOCK(450f), CHARCOAL(25f), REDSTONE(100f), REDSTONE_BLOCK(900f), BLAZE_POWDER(200f), BLAZE_ROD(
             400f), NETHER_STAR(20000f), ENDER_PEARL(900f);
 
     private float energyValue;
 
-    private QuarryFuel(float energy) {
+    private QuarryFuel(float energy)
+    {
         this.energyValue = energy;
     }
 
-    public float getEnergyValue() {
+    public float getEnergyValue()
+    {
         return energyValue;
     }
 
-    public static QuarryFuel getFuel(Material someMat) {
-        switch (someMat) {
+    public static QuarryFuel getFuel(Material someMat)
+    {
+        switch (someMat)
+        {
             case COAL:
                 return QuarryFuel.COAL;
             case COAL_BLOCK:

@@ -11,7 +11,8 @@ import com.randomlunacy.quarrycraft2.tasks.QuarryCleaner;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class QuarryCraft2 extends JavaPlugin {
+public class QuarryCraft2 extends JavaPlugin
+{
 
     public static final String PLUGIN_NAME = "QuarryCraft2";
 
@@ -26,19 +27,23 @@ public class QuarryCraft2 extends JavaPlugin {
 
     private MainConfiguration configuration;
 
-    public static synchronized QuarryCraft2 getInstance() {
+    public static synchronized QuarryCraft2 getInstance()
+    {
         return pluginInstance;
     }
 
-    private static synchronized void setInstance(QuarryCraft2 instance) {
+    private static synchronized void setInstance(QuarryCraft2 instance)
+    {
         pluginInstance = instance;
     }
 
-    public MainConfiguration getMainConfig() {
+    public MainConfiguration getMainConfig()
+    {
         return configuration;
     }
 
-    public Quarries getQuarryList() {
+    public Quarries getQuarryList()
+    {
         return this.quarries;
     }
 
@@ -46,7 +51,8 @@ public class QuarryCraft2 extends JavaPlugin {
      * Called when Bukkit server enables the plugin For improved reload behavior, use this as if it was the class constructor
      */
     @Override
-    public void onEnable() {
+    public void onEnable()
+    {
         QuarryCraft2.setInstance(this);
 
         // Save default configs if they not exist. Then load the configurations into memory
@@ -63,23 +69,27 @@ public class QuarryCraft2 extends JavaPlugin {
      * state here.
      */
     @Override
-    public void onDisable() {
+    public void onDisable()
+    {
         quarries.saveQuarries();
         this.getServer().getScheduler().cancelTasks(this);
     }
 
-    private void setupCommands() {
+    private void setupCommands()
+    {
         this.getCommand("qc2reload").setExecutor(new ReloadConfigCommand());
         this.getCommand("qc2guide").setExecutor(new GuideCommand());
     }
 
-    private void setupEventListeners() {
+    private void setupEventListeners()
+    {
         this.getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         this.getServer().getPluginManager().registerEvents(new BlockPistonListener(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerClickHandler(), this);
     }
 
-    private void setupTasks() {
+    private void setupTasks()
+    {
         new QuarryCleaner().runTaskTimer(QuarryCraft2.getInstance(), 10, 10);
     }
 }

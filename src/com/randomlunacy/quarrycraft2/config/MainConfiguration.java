@@ -6,9 +6,11 @@ import java.util.List;
 
 import org.bukkit.Material;
 
-public class MainConfiguration extends Configuration {
+public class MainConfiguration extends Configuration
+{
 
-    public MainConfiguration() {
+    public MainConfiguration()
+    {
         super("config.yml", "config.yml");
 
         this.config.addDefault("underwater-plants", Arrays.asList(defaultUnderwaterPlants));
@@ -28,13 +30,15 @@ public class MainConfiguration extends Configuration {
     private boolean doWorldGuardProtection;
     private boolean doGriefPreventionProtection;
 
-    private String[] defaultUnderwaterPlants = {"SEAGRASS", "TALL_SEAGRASS", "KELP", "KELP_PLANT"};
+    private String[] defaultUnderwaterPlants =
+    {"SEAGRASS", "TALL_SEAGRASS", "KELP", "KELP_PLANT"};
 
     // TODO: Verify that this gives adequate protection in WorldGuard and/or make configurable
     private int maxWGY = 100;
     private int minWGY = 20;
 
-    private void loadValues() {
+    private void loadValues()
+    {
         // Unpublished
         this.doDebug = this.config.getBoolean("debug", false);
         this.underwaterPlants = this.config.getStringList("underwater-plants");
@@ -51,57 +55,71 @@ public class MainConfiguration extends Configuration {
         buildPlantMaterialList();
     }
 
-    private void buildPlantMaterialList() {
+    private void buildPlantMaterialList()
+    {
         underwaterPlantMaterials.clear();
-        if (null == underwaterPlants || underwaterPlants.isEmpty()) {
+        if (null == underwaterPlants || underwaterPlants.isEmpty())
+        {
             this.underwaterPlants = Arrays.asList(defaultUnderwaterPlants);
         }
-        for (String value : underwaterPlants) {
+        for (String value : underwaterPlants)
+        {
             underwaterPlantMaterials.add(Material.getMaterial(value));
         }
     }
 
-    public Boolean isDebugEnabled() {
+    public Boolean isDebugEnabled()
+    {
         return this.doDebug;
     }
 
-    public int getQuarryLimit() {
+    public int getQuarryLimit()
+    {
         return quarryLimit;
     }
 
-    public int getMaxQuarryWidth() {
+    public int getMaxQuarryWidth()
+    {
         return maxQuarryWidth;
     }
 
-    public int getMaxQuarryLength() {
+    public int getMaxQuarryLength()
+    {
         return maxQuarryLength;
     }
 
-    public boolean isWelcomeMessageEnabled() {
+    public boolean isWelcomeMessageEnabled()
+    {
         return doWelcomeMessage;
     }
 
-    public long getGuideBookCooldown() {
+    public long getGuideBookCooldown()
+    {
         return guideBookCooldown;
     }
 
-    public boolean isWorldGuardProtectionEnabled() {
+    public boolean isWorldGuardProtectionEnabled()
+    {
         return doWorldGuardProtection;
     }
 
-    public boolean isGriefPreventionProtectionEnabled() {
+    public boolean isGriefPreventionProtectionEnabled()
+    {
         return doGriefPreventionProtection;
     }
 
-    public int getMaxWGY() {
+    public int getMaxWGY()
+    {
         return maxWGY;
     }
 
-    public int getMinWGY() {
+    public int getMinWGY()
+    {
         return minWGY;
     }
 
-    public List<Material> getUnderwaterPlants() {
+    public List<Material> getUnderwaterPlants()
+    {
         return underwaterPlantMaterials;
     }
 }
