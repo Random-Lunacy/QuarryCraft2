@@ -31,7 +31,7 @@ public class MainConfiguration extends Configuration
     private boolean doGriefPreventionProtection;
 
     private String[] defaultUnderwaterPlants =
-    {"SEAGRASS", "TALL_SEAGRASS", "KELP", "KELP_PLANT"};
+    {"SEAGRASS", "TALL_SEAGRASS", "KELP", "KELP_PLANT", "SEA_PICKLE"};
 
     // TODO: Verify that this gives adequate protection in WorldGuard and/or make configurable
     private int maxWGY = 100;
