@@ -107,7 +107,8 @@ public class Quarries
                 fos.write(fileString.getBytes());
                 fos.flush();
                 fos.close();
-            } catch (IOException e)
+            }
+            catch (IOException e)
             {
                 Logger.logSevere("Failure writing to '" + path + "'': " + e);
             }
@@ -164,9 +165,11 @@ public class Quarries
                     Location quarryLoc = new Location(Bukkit.getWorld(locString[0]), x, y, z);
                     addQuarry(quarryLoc, minX, maxX, minZ, maxZ, classicMode, ownerName, isPaused);
 
-                } while (currentCoords != null);
+                }
+                while (currentCoords != null);
                 inFile.close();
-            } catch (IOException e)
+            }
+            catch (IOException e)
             {
                 Logger.logSevere("Failure reading from '" + path + "'': " + e);
             }

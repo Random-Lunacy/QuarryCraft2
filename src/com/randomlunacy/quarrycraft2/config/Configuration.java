@@ -77,7 +77,8 @@ public abstract class Configuration
             {
                 Logger.logNotice("Found existing file at " + this.configName + " - not creating a new one");
             }
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             Logger.logSevere("Error initializing config file " + this.configName);
             e.printStackTrace();
@@ -94,7 +95,8 @@ public abstract class Configuration
         try
         {
             this.config.save(this.configFile);
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
             Logger.logSevere("Unable to save configuration file.");
