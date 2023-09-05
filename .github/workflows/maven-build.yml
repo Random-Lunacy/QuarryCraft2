@@ -2,7 +2,7 @@
 name: Maven Build
 
 on:
-  pull_ request:
+  pull_request:
     branch: main
 
 jobs:
